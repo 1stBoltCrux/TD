@@ -6,9 +6,13 @@ import styled from 'styled-components'
 import uuid from 'uuid'
 import {TILE_H, TILE_W, MAP_H, MAP_W} from './config/movement/MovementVariables'
 
+const BoardContainer = styled.div`
+  position: relative;
+`
+
 const Block = styled.div`
   font-size: .5em;
-  border: 1px solid black;
+  border: none;
   width: 30px;
   height: 30px;
   background-color: ${props => props.tileType === 0 ? 'green' : 'blue'};
@@ -59,7 +63,7 @@ class Board extends Component {
 
 componentDidMount(){
     this.setEnemyPositions();
-    setInterval(this.updateTimer, 3000)
+    setInterval(this.updateTimer, 500)
   }
 
 
@@ -89,11 +93,11 @@ componentDidMount(){
 
 
     return (
-      <div className="Board">
+      <BoardContainer>
         <Enemy movementTimer={this.state.movementTimer} enemyPositions={this.state.enemyPositions}/>
 
         {currentMap}
-      </div>
+      </BoardContainer>
     );
   }
 }
