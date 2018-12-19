@@ -1,4 +1,6 @@
 import React, { Component } from 'react';
+import styled from 'styled-components'
+
 
 
 
@@ -8,11 +10,12 @@ class Tile extends Component {
   }
 
   render(props) {
+
     const {coords, tileType} = this.props
 
     return (
-      <div className="Tile">
-        {tileType}
+      <div>
+        {coords}
       </div>
     );
   }

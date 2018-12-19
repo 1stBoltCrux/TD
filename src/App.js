@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import Board from './Board'
+
+import ControlPanel from './ControlPanel'
 import styled from 'styled-components'
 
 const MainContainer = styled.div`
@@ -14,6 +16,7 @@ class App extends Component {
     return (
       <MainContainer>
         <Board/>
+        <ControlPanel/>
       </MainContainer>
 
 
