@@ -28,7 +28,7 @@ class ControlPanel extends Component {
   }
 
   render(props) {
-    const {gameState, changeMap} = this.props
+    const {gameState, changeMap, currentBoard} = this.props
     return(
       <ControlsContainer>
         <ControlButton onClick={this.props.startGame}>
@@ -40,15 +40,22 @@ class ControlPanel extends Component {
           )}
 
         </ControlButton>
-        <ControlButton onClick={() => changeMap(BoardOne)}>
-          Map One
-        </ControlButton>
-        <ControlButton onClick={() => changeMap(BoardTwo)}>
-          Map Two
-        </ControlButton>
-        <ControlButton onClick={() => changeMap(BoardThree)}>
-          Map Three
-        </ControlButton>
+        {!currentBoard && (
+          <div>
+            <ControlButton onClick={() => changeMap(BoardOne)}>
+              Map One
+            </ControlButton>
+            <ControlButton onClick={() => changeMap(BoardTwo)}>
+              Map Two
+            </ControlButton>
+            <ControlButton onClick={() => changeMap(BoardThree)}>
+              Map Three
+            </ControlButton>
+          </div>
+
+
+        )}
+
       </ControlsContainer>
     )
 

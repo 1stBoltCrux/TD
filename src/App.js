@@ -60,7 +60,8 @@ class App extends Component {
         }
 
         <ControlPanel startGame={this.startGame} gameState={this.state.gameState}
-          changeMap={this.changeMap}/>
+          changeMap={this.changeMap}
+          currentBoard={this.state.currentBoard}/>
       </MainContainer>
 
 
