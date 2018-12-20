@@ -16,7 +16,7 @@ class App extends Component {
     super(props)
 
     this.state = {
-      gameState: 'paused',
+      gameState: false,
       movementTimer: 0
     }
   }
@@ -48,7 +48,7 @@ class App extends Component {
     return (
       <MainContainer>
         <Board gameState={this.state.gameState} movementTimer={this.state.movementTimer}/>
-        <ControlPanel startGame={this.startGame}/>
+        <ControlPanel startGame={this.startGame} gameState={this.state.gameState}/>
       </MainContainer>
 
 

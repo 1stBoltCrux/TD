@@ -2,8 +2,6 @@ import React, { Component } from 'react';
 import styled from 'styled-components'
 
 
-
-
 class Tile extends Component {
   constructor(props){
     super(props)
@@ -14,9 +12,9 @@ class Tile extends Component {
     const {coords, tileType} = this.props
 
     return (
-      <div>
-        {coords}
-      </div>
+<div>
+  {coords}
+</div>
     );
   }
 }

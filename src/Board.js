@@ -11,12 +11,16 @@ const BoardContainer = styled.div`
 `
 
 const Block = styled.div`
-  font-size: .5em;
-  border: none;
-  width: 30px;
-  height: 30px;
-  background-color: ${props => props.tileType === 0 ? 'green' : 'blue'};
-`;
+justify-content: center;
+display: flex;
+align-items: center;
+box-sizing: border-box;
+border: 1px solid black;
+font-size: .5em;
+width: 30px;
+height: 30px;
+background-color: ${props => props.tileType === 0 ? 'green' : 'blue'};
+`
 
 const Row = styled.div`
   display: flex;
