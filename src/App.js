@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import {BoardOne, BoardTwo, BoardThree} from './config/board/Boards';
 import Board from './Board'
 
 import ControlPanel from './ControlPanel'
@@ -17,7 +18,8 @@ class App extends Component {
 
     this.state = {
       gameState: false,
-      movementTimer: 0
+      movementTimer: 0,
+      currentBoard: null
     }
   }
 
@@ -41,14 +43,24 @@ class App extends Component {
         clearInterval(alterGameState)
       }
     }, 750)
-
-
   }
+
+  changeMap = (board) => {
+    this.setState({
+      currentBoard: board
+    })
+  }
+
   render() {
     return (
       <MainContainer>
-        <Board gameState={this.state.gameState} movementTimer={this.state.movementTimer}/>
-        <ControlPanel startGame={this.startGame} gameState={this.state.gameState}/>
+        {this.state.currentBoard &&
+          <Board gameState={this.state.gameState} movementTimer={this.state.movementTimer}
+            currentBoard={this.state.currentBoard}/>
+        }
+
+        <ControlPanel startGame={this.startGame} gameState={this.state.gameState}
+          changeMap={this.changeMap}/>
       </MainContainer>
 
 

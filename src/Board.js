@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import BoardOne from './config/board/BoardOne';
 import Tile from './Tile'
 import Enemy from './enemies/Enemy'
 import styled from 'styled-components'
@@ -32,7 +31,7 @@ class Board extends Component {
 
       this.state = {
         enemyPositions: [],
-        movementTimer: 0
+        movementTimer: 0,
       }
   }
 
@@ -41,7 +40,7 @@ class Board extends Component {
     let top;
     let right;
     let enemyPositions = []
-    BoardOne.map((row, i) => {
+    this.props.currentBoard.map((row, i) => {
 
       row.map((tile, j) => {
         if(tile !== 0){
@@ -62,13 +61,15 @@ class Board extends Component {
   }
 
 componentDidMount(){
-    this.setEnemyPositions();
+      this.setEnemyPositions();
 
   }
 
 
   render() {
-    const currentMap = BoardOne.map((row, i) => {
+
+
+    const currentMap = this.props.currentBoard.map((row, i) => {
 
       const whichRow = i;
       return (
