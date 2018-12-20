@@ -20,10 +20,12 @@ class Enemy extends Component {
     super(props)
   }
 
+
   render(props) {
     const {enemyPositions, movementTimer} = this.props;
     let newPosition = enemyPositions[movementTimer]
     if (newPosition) {
+      console.log(newPosition);
       return(
         <EnemyContainer newPosition={newPosition}>
           ß

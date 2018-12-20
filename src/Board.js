@@ -40,12 +40,17 @@ class Board extends Component {
     BoardOne.map((row, i) => {
 
       row.map((tile, j) => {
-        if(tile === 1){
+        if(tile !== 0){
           top = i * TILE_H
           right = j * TILE_W
-          enemyPositions.push({top:top, right:right})
+          enemyPositions.push({top:top, right:right, tile: tile})
         }
       })
+    })
+    enemyPositions.sort((position1, position2) => {
+      if( position1.tile < position2.tile ) {
+        return -1
+      }
     })
     this.setState({
       enemyPositions: enemyPositions
