@@ -57,18 +57,9 @@ class Board extends Component {
     })
   }
 
-  updateTimer = () => {
-    let timer = this.state.movementTimer;
-    timer ++
-    this.setState({
-      movementTimer: timer
-    })
-  }
-
-
 componentDidMount(){
     this.setEnemyPositions();
-    setInterval(this.updateTimer, 500)
+
   }
 
 
@@ -99,7 +90,7 @@ componentDidMount(){
 
     return (
       <BoardContainer>
-        <Enemy movementTimer={this.state.movementTimer} enemyPositions={this.state.enemyPositions}/>
+        <Enemy movementTimer={this.props.movementTimer} enemyPositions={this.state.enemyPositions}/>
 
         {currentMap}
       </BoardContainer>

@@ -12,11 +12,43 @@ const MainContainer = styled.div`
 `
 
 class App extends Component {
+  constructor(props){
+    super(props)
+
+    this.state = {
+      gameState: 'paused',
+      movementTimer: 0
+    }
+  }
+
+  updateTimer = () => {
+    let timer = this.state.movementTimer;
+    timer ++
+    this.setState({
+      movementTimer: timer
+    })
+  }
+
+  startGame = () => {
+    this.setState({
+      gameState: !this.state.gameState
+    })
+    var alterGameState = setInterval(() => {
+      if (this.state.gameState === true) {
+        this.updateTimer();
+      }
+      if (this.state.gameState === false) {
+        clearInterval(alterGameState)
+      }
+    }, 750)
+
+
+  }
   render() {
     return (
       <MainContainer>
-        <Board/>
-        <ControlPanel/>
+        <Board gameState={this.state.gameState} movementTimer={this.state.movementTimer}/>
+        <ControlPanel startGame={this.startGame}/>
       </MainContainer>
 
 

@@ -25,7 +25,7 @@ class Enemy extends Component {
     const {enemyPositions, movementTimer} = this.props;
     let newPosition = enemyPositions[movementTimer]
     if (newPosition) {
-      console.log(newPosition);
+
       return(
         <EnemyContainer newPosition={newPosition}>
           ß
