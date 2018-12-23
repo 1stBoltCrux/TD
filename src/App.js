@@ -93,7 +93,9 @@ class App extends Component {
     let newTower = {};
 
     newTower[whichTower] = {
-      towerElement: <Tower movementTimer={this.state.movementTimer} />,
+      towerElement: <Tower
+        towers={this.state.towers}
+        movementTimer={this.state.movementTimer} />,
       towerCoords: tileCoords
     }
 
@@ -127,7 +129,9 @@ class App extends Component {
             </EnemyContainer>
           }
 
-          <ControlPanel startGame={this.startGame} gameState={this.state.gameState}
+          <ControlPanel
+            
+            startGame={this.startGame} gameState={this.state.gameState}
             changeMap={this.changeMap}
             currentBoard={this.state.currentBoard}/>
         </MainContainer>

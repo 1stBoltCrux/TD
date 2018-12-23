@@ -38,6 +38,7 @@ class Board extends Component {
 
   shouldComponentUpdate(nextProps){
     if (this.props.enemyPositions.length !== nextProps.enemyPositions.length) {
+      console.log('new tower added');
       return true
     } else {
       return false
@@ -85,7 +86,7 @@ class Board extends Component {
 
     return (
       <div>
-        
+
         <BoardContainer>
 
 

@@ -29,7 +29,7 @@ class ControlPanel extends Component {
   // }
 
   render(props) {
-    const {gameState, changeMap, currentBoard} = this.props
+    const {towers, gameState, changeMap, currentBoard} = this.props
     return(
       <ControlsContainer>
         <div>
