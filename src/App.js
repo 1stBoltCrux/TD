@@ -1,9 +1,11 @@
 import React, { Component } from 'react';
 import {BoardOne, BoardTwo, BoardThree} from './config/board/Boards';
 import Board from './Board'
-
+import Tower from './towers/Tower'
 import ControlPanel from './ControlPanel'
 import styled from 'styled-components'
+
+import {TowerDrag} from './draggables/Draggable'
 
 const MainContainer = styled.div`
   display: flex;
@@ -19,7 +21,8 @@ class App extends Component {
     this.state = {
       gameState: false,
       movementTimer: 0,
-      currentBoard: null
+      currentBoard: null,
+      towers: {}
     }
   }
 
@@ -51,18 +54,40 @@ class App extends Component {
     })
   }
 
-  render() {
-    return (
-      <MainContainer>
-        {this.state.currentBoard &&
-          <Board gameState={this.state.gameState} movementTimer={this.state.movementTimer}
-            currentBoard={this.state.currentBoard}/>
-        }
+  makeTower = (tileCoords, whichTower) => {
+    let newTower = {};
 
-        <ControlPanel startGame={this.startGame} gameState={this.state.gameState}
-          changeMap={this.changeMap}
-          currentBoard={this.state.currentBoard}/>
-      </MainContainer>
+    newTower[whichTower] = {
+      towerElement: <Tower movementTimer={this.state.movementTimer} />,
+      towerCoords: tileCoords
+    }
+
+    let newTowerState = Object.assign(this.state.towers, newTower);
+
+    this.setState({
+      towers: newTowerState
+
+    })
+  }
+
+  render() {
+    console.log('re-rendering app');
+    return (
+
+        <MainContainer>
+          {this.state.currentBoard &&
+            <Board
+              towers={this.state.towers}
+              makeTower={this.makeTower}
+              gameState={this.state.gameState} movementTimer={this.state.movementTimer}
+              currentBoard={this.state.currentBoard}/>
+          }
+
+          <ControlPanel startGame={this.startGame} gameState={this.state.gameState}
+            changeMap={this.changeMap}
+            currentBoard={this.state.currentBoard}/>
+        </MainContainer>
+
 
 
     );

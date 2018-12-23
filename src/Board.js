@@ -1,9 +1,11 @@
 import React, { Component } from 'react';
 import Tile from './Tile'
-import Enemy from './enemies/Enemy'
+import Enemy from './enemies/Enemy';
+import Tower from './towers/Tower'
 import styled from 'styled-components'
 import uuid from 'uuid'
-import {TILE_H, TILE_W, MAP_H, MAP_W} from './config/movement/MovementVariables'
+import {TILE_H, TILE_W, MAP_H, MAP_W} from './config/movement/MovementVariables';
+
 
 const BoardContainer = styled.div`
   position: relative;
@@ -39,7 +41,7 @@ class Board extends Component {
   setEnemyPositions = () => {
     let top;
     let right;
-    let enemyPositions = []
+    let enemyPositions = [];
     this.props.currentBoard.map((row, i) => {
 
       row.map((tile, j) => {
@@ -74,14 +76,18 @@ componentDidMount(){
       const whichRow = i;
       return (
           <Row key={uuid()}>
-            {row.map((tile, i) => {
-              const whichTile = i;
+            {row.map((tile, j) => {
+              const whichTile = j;
               const coords = [whichRow, whichTile]
-
+              const whichTower = `y${whichRow}x${whichTile}`
               return(
                 <Block key={uuid()} tileType={tile}>
                   <Tile
+
+                    makeTower={this.props.makeTower}
+                    towers={this.props.towers}
                     key={uuid()}
+                    whichTower={whichTower}
                     coords={coords}
                     tileType={tile}
                   />
@@ -94,11 +100,22 @@ componentDidMount(){
 
 
     return (
-      <BoardContainer>
-        <Enemy movementTimer={this.props.movementTimer} enemyPositions={this.state.enemyPositions}/>
+      <div>
+        <Tower
 
-        {currentMap}
-      </BoardContainer>
+          movementTimer={this.props.movementTimer}
+          enemyPositions={this.state.enemyPositions}
+
+        />
+        <BoardContainer>
+
+          <Enemy movementTimer={this.props.movementTimer} enemyPositions={this.state.enemyPositions}/>
+
+          {currentMap}
+        </BoardContainer>
+      </div>
+
+
     );
   }
 }

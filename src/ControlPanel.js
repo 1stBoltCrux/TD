@@ -3,6 +3,7 @@ import {BoardOne, BoardTwo, BoardThree} from './config/board/Boards';
 import styled from 'styled-components'
 
 const ControlsContainer = styled.div`
+  text-align: center;
   padding: 20px;
   height: 600px;
   width: 200px;
@@ -21,7 +22,6 @@ const ControlButton = styled.div`
   }
 `
 
-
 class ControlPanel extends Component {
   constructor(props){
     super(props)
@@ -31,17 +31,22 @@ class ControlPanel extends Component {
     const {gameState, changeMap, currentBoard} = this.props
     return(
       <ControlsContainer>
-        <ControlButton onClick={this.props.startGame}>
-          {!gameState && (
-            <p>Start!</p>
-          )}
-          {gameState && (
-            <p>Stop!</p>
-          )}
+        {currentBoard &&
+          <ControlButton onClick={this.props.startGame}>
+            {!gameState && (
+              <p>Start!</p>
+            )}
+            {gameState && (
+              <p>Stop!</p>
+            )}
 
-        </ControlButton>
+          </ControlButton>
+        }
+
         {!currentBoard && (
+
           <div>
+            <h3>Select a Map!</h3>
             <ControlButton onClick={() => changeMap(BoardOne)}>
               Map One
             </ControlButton>
@@ -51,9 +56,9 @@ class ControlPanel extends Component {
             <ControlButton onClick={() => changeMap(BoardThree)}>
               Map Three
             </ControlButton>
+
+
           </div>
-
-
         )}
 
       </ControlsContainer>

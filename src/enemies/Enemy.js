@@ -8,7 +8,9 @@ const EnemyContainer = styled.div`
   height: 30px;
   border-radius: 20px;
   color: white;
-  text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   top: ${props => props.newPosition.top}px;
   left: ${props => props.newPosition.right}px;
 `
@@ -21,13 +23,13 @@ class Enemy extends Component {
 
   render(props) {
     const {enemyPositions, movementTimer} = this.props;
-    let newPosition = enemyPositions[movementTimer]
+    let newPosition = enemyPositions[movementTimer];
     if (newPosition) {
       console.log(newPosition);
 
       return(
         <EnemyContainer newPosition={newPosition}>
-          ß
+          E
         </EnemyContainer>
       )
     } else {
