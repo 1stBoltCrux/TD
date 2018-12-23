@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import styled from 'styled-components';
 import {DragSource} from 'react-dnd'
 import {TowerDrag} from './../draggables/Draggable'

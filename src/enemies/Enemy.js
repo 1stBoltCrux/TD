@@ -17,9 +17,7 @@ const EnemyContainer = styled.div`
 
 
 class Enemy extends Component {
-  constructor(props){
-    super(props)
-  }
+
 
   render(props) {
     const {enemyPositions, movementTimer} = this.props;

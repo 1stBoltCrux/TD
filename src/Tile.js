@@ -12,6 +12,7 @@ const TileContainer = styled.div`
 const tileTarget = {
 
   drop(props, monitor) {
+    console.log('tileTarget()');
   props.makeTower(props.coords, props.whichTower)
   }
 };
@@ -24,7 +25,25 @@ function collect(connect, monitor) {
 }
 
 
-function Tile({whichTower, id, towers, coords, tileType, connectDropTarget, isOver}) {
+
+
+class Tile extends Component {
+  // constructor(props){
+  //   super(props)
+  //
+  //
+  // }
+
+
+  // shouldComponentUpdate(nextProps, nextState){
+  //
+  // }
+
+
+
+  render(){
+const {whichTower, towers, coords, connectDropTarget} = this.props
+
 
     return connectDropTarget(
       <div>
@@ -32,7 +51,7 @@ function Tile({whichTower, id, towers, coords, tileType, connectDropTarget, isOv
 
           {
             Object.keys(towers).map(tower => {
-              console.log('hello');
+
               if (tower === whichTower) {
                 return(
                   <div key={uuid()}>
@@ -49,6 +68,7 @@ function Tile({whichTower, id, towers, coords, tileType, connectDropTarget, isOv
 
 
     );
+        }
 
 }
 

@@ -1,11 +1,8 @@
 import React, { Component } from 'react';
-import {BoardOne, BoardTwo, BoardThree} from './config/board/Boards';
 import Board from './Board'
 import Tower from './towers/Tower'
 import ControlPanel from './ControlPanel'
 import styled from 'styled-components'
-
-import {TowerDrag} from './draggables/Draggable'
 
 const MainContainer = styled.div`
   display: flex;

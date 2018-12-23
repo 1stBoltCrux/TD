@@ -4,7 +4,7 @@ import Enemy from './enemies/Enemy';
 import Tower from './towers/Tower'
 import styled from 'styled-components'
 import uuid from 'uuid'
-import {TILE_H, TILE_W, MAP_H, MAP_W} from './config/movement/MovementVariables';
+import {TILE_H, TILE_W} from './config/movement/MovementVariables';
 
 
 const BoardContainer = styled.div`
@@ -60,16 +60,23 @@ class Board extends Component {
     this.setState({
       enemyPositions: enemyPositions
     })
+
   }
 
 componentDidMount(){
-      this.setEnemyPositions();
+console.log('mounting board');
+    this.setEnemyPositions();
+
+
 
   }
+
+
 
 
   render() {
 
+    console.log(Object.keys(this.props.towers).length)
 
     const currentMap = this.props.currentBoard.map((row, i) => {
 

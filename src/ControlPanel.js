@@ -23,9 +23,9 @@ const ControlButton = styled.div`
 `
 
 class ControlPanel extends Component {
-  constructor(props){
-    super(props)
-  }
+  // constructor(props){
+  //   super(props)
+  // }
 
   render(props) {
     const {gameState, changeMap, currentBoard} = this.props
