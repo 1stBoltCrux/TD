@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import {BoardOne, BoardTwo, BoardThree} from './config/board/Boards';
+import Tower from './towers/Tower'
 import styled from 'styled-components'
 
 const ControlsContainer = styled.div`
@@ -31,18 +32,23 @@ class ControlPanel extends Component {
     const {gameState, changeMap, currentBoard} = this.props
     return(
       <ControlsContainer>
-        {currentBoard &&
-          <ControlButton onClick={this.props.startGame}>
-            {!gameState && (
-              <p>Start!</p>
-            )}
-            {gameState && (
-              <p>Stop!</p>
-            )}
+        <div>
 
-          </ControlButton>
-        }
 
+          {currentBoard &&
+            <ControlButton onClick={this.props.startGame}>
+              {!gameState && (
+                <p>Start!</p>
+              )}
+              {gameState && (
+                <p>Stop!</p>
+              )}
+
+            </ControlButton>
+
+          }
+          <Tower/>
+        </div>
         {!currentBoard && (
 
           <div>

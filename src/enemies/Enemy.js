@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import styled from 'styled-components'
 
 const EnemyContainer = styled.div`
+  z-index: 2;
   position: absolute;
   background-color: black;
   width: 30px;
@@ -20,7 +21,9 @@ class Enemy extends Component {
 
 
   render(props) {
+
     const {enemyPositions, movementTimer} = this.props;
+        console.log(enemyPositions);
     let newPosition = enemyPositions[movementTimer];
     if (newPosition) {
       console.log(newPosition);

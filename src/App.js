@@ -3,12 +3,21 @@ import Board from './Board'
 import Tower from './towers/Tower'
 import ControlPanel from './ControlPanel'
 import styled from 'styled-components'
+import Enemy from './enemies/Enemy';
+import {TILE_H, TILE_W} from './config/movement/MovementVariables';
 
 const MainContainer = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
   padding: 20px;
+`
+
+const EnemyContainer = styled.div`
+  height: 600px;
+  width: 600px;
+
+  position: relative;
 `
 
 class App extends Component {
@@ -19,8 +28,35 @@ class App extends Component {
       gameState: false,
       movementTimer: 0,
       currentBoard: null,
-      towers: {}
+      towers: {},
+      enemyPositions: [],
+      movementTimer: 0,
     }
+  }
+
+  setEnemyPositions = () => {
+    let top;
+    let right;
+    let enemyPositions = [];
+    this.state.currentBoard.map((row, i) => {
+
+      row.map((tile, j) => {
+        if(tile !== 0){
+          top = i * TILE_H
+          right = j * TILE_W
+          enemyPositions.push({top:top, right:right, tile: tile})
+        }
+      })
+    })
+    enemyPositions.sort((position1, position2) => {
+      if( position1.tile < position2.tile ) {
+        return -1
+      }
+    })
+    this.setState({
+      enemyPositions: enemyPositions
+    })
+
   }
 
   updateTimer = () => {
@@ -48,6 +84,8 @@ class App extends Component {
   changeMap = (board) => {
     this.setState({
       currentBoard: board
+    }, ()=> {
+            this.setEnemyPositions();
     })
   }
 
@@ -72,12 +110,21 @@ class App extends Component {
     return (
 
         <MainContainer>
+
+
           {this.state.currentBoard &&
-            <Board
-              towers={this.state.towers}
-              makeTower={this.makeTower}
-              gameState={this.state.gameState} movementTimer={this.state.movementTimer}
-              currentBoard={this.state.currentBoard}/>
+            <EnemyContainer>
+              <Enemy
+                enemyPositions={this.state.enemyPositions}
+                movementTimer={this.state.movementTimer}
+              />
+              <Board
+                enemyPositions={this.state.enemyPositions}
+                towers={this.state.towers}
+                makeTower={this.makeTower}
+                gameState={this.state.gameState} movementTimer={this.state.movementTimer}
+                currentBoard={this.state.currentBoard}/>
+            </EnemyContainer>
           }
 
           <ControlPanel startGame={this.startGame} gameState={this.state.gameState}
