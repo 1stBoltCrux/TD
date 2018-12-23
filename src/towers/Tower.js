@@ -17,21 +17,27 @@ const TowerContainer = styled.div`
 const towerSource = {
   beginDrag(props) {
     return {};
-  }
+  },
+  canDrag: function(props, monitor) {
+  return props.canDrag;
+}
 };
 
 function collect(connect, monitor) {
   return {
     connectDragSource: connect.dragSource(),
-    isDragging: monitor.isDragging()
+    isDragging: monitor.isDragging(),
+
   }
 }
 
 
-function Tower({connectDragSource, isDragging}) {
+function Tower({connectDragSource, isDragging, canDrag}) {
 
     return connectDragSource(
-      <div style={{
+      <div
+        style={{
+
         opacity: isDragging ? 0.5 : 1,
         fontSize: 25,
         fontWeight: 'bold',

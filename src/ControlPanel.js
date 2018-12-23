@@ -47,7 +47,8 @@ class ControlPanel extends Component {
             </ControlButton>
 
           }
-          <Tower/>
+          <Tower
+            canDrag={true}/>
         </div>
         {!currentBoard && (
 

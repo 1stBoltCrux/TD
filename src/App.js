@@ -94,6 +94,7 @@ class App extends Component {
 
     newTower[whichTower] = {
       towerElement: <Tower
+        canDrag={false}
         towers={this.state.towers}
         movementTimer={this.state.movementTimer} />,
       towerCoords: tileCoords
@@ -130,7 +131,7 @@ class App extends Component {
           }
 
           <ControlPanel
-            
+
             startGame={this.startGame} gameState={this.state.gameState}
             changeMap={this.changeMap}
             currentBoard={this.state.currentBoard}/>
