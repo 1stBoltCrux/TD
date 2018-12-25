@@ -13,7 +13,7 @@ const EnemyContainer = styled.div`
   justify-content: center;
   align-items: center;
   transform: translate(${props => props.newPosition.right}px, ${props => props.newPosition.top}px);
-  transition: transform .75s linear;
+  transition: transform .2s linear;
 `
 
 
@@ -26,6 +26,7 @@ class Enemy extends Component {
 
     let newPosition = enemyPositions[movementTimer];
     if (newPosition && enemyStatus) {
+      console.log(newPosition);
 
 
 

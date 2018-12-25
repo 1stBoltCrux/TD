@@ -54,8 +54,33 @@ class Tile extends Component {
 
 
   render(){
-const {whichTower, towers, coords, connectDropTarget, isOver} = this.props
+    console.log(this.props);
+const {whichTower, towers, coords, connectDropTarget, isOver, tileType} = this.props
 
+  if (tileType !== 0) {
+    return (
+      <div>
+
+
+        <TileContainer>
+          {
+            Object.keys(towers).map(tower => {
+
+              if (tower === whichTower) {
+                return(
+                  <div key={uuid()}>
+                    {towers[tower].towerElement}
+                  </div>
+
+                )
+              }
+            })
+          }
+          {coords}
+        </TileContainer>
+      </div>
+    )
+  } else {
     return connectDropTarget(
       <div>
 
@@ -85,6 +110,9 @@ const {whichTower, towers, coords, connectDropTarget, isOver} = this.props
 
 
     );
+
+  }
+
         }
 
 }
