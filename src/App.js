@@ -31,6 +31,8 @@ class App extends Component {
       towers: {},
       enemyPositions: [],
       movementTimer: 0,
+      enemyHP: 100,
+      enemyStatus: true
     }
   }
 
@@ -110,6 +112,11 @@ class App extends Component {
   }
 
 checkForEnemy = () => {
+  if (this.state.enemyHP <= 0 ) {
+    this.setState({
+      enemyStatus: false
+    })
+  }
   Object.keys(this.state.towers).map(tower => {
     let towerCoords = tower.split('-')
     let xCoord = parseInt(towerCoords[1])
@@ -117,10 +124,13 @@ checkForEnemy = () => {
     let newPosition = this.state.enemyPositions[this.state.movementTimer];
 
 
-    if (
+    if ( newPosition &&
       ((newPosition.top / TILE_H) === yCoord + 1 || (newPosition.top / TILE_H) === yCoord - 1 || (newPosition.top / TILE_H) === yCoord) && (((newPosition.right / TILE_W) === xCoord + 1 || (newPosition.right / TILE_W) === xCoord - 1 || (newPosition.right / TILE_W) === xCoord))
     )  {
-      console.log('in range');
+      this.setState({
+        enemyHP: this.state.enemyHP - 10
+      })
+      console.log(this.state.enemyHP);
     }
 
 
@@ -139,6 +149,8 @@ checkForEnemy = () => {
           {this.state.currentBoard &&
             <EnemyContainer>
               <Enemy
+                enemyStatus={this.state.enemyStatus}
+                enemyHP={this.state.enemyHP}
                 enemyPositions={this.state.enemyPositions}
                 movementTimer={this.state.movementTimer}
               />

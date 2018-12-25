@@ -22,10 +22,10 @@ class Enemy extends Component {
 
   render(props) {
 
-    const {enemyPositions, movementTimer} = this.props;
+    const {enemyPositions, movementTimer, enemyHP, enemyStatus} = this.props;
 
     let newPosition = enemyPositions[movementTimer];
-    if (newPosition) {
+    if (newPosition && enemyStatus) {
 
 
 
