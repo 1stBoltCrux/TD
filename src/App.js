@@ -65,6 +65,7 @@ class App extends Component {
     this.setState({
       movementTimer: timer
     })
+    this.checkForEnemy();
   }
 
   startGame = () => {
@@ -108,8 +109,28 @@ class App extends Component {
     })
   }
 
+checkForEnemy = () => {
+  Object.keys(this.state.towers).map(tower => {
+    let towerCoords = tower.split('-')
+    let xCoord = parseInt(towerCoords[1])
+    let yCoord = parseInt(towerCoords[0])
+    let newPosition = this.state.enemyPositions[this.state.movementTimer];
+
+
+    if (
+      ((newPosition.top / TILE_H) === yCoord + 1 || (newPosition.top / TILE_H) === yCoord - 1 || (newPosition.top / TILE_H) === yCoord) && (((newPosition.right / TILE_W) === xCoord + 1 || (newPosition.right / TILE_W) === xCoord - 1 || (newPosition.right / TILE_W) === xCoord))
+    )  {
+      console.log('in range');
+    }
+
+
+  })
+
+
+
+}
+
   render() {
-    console.log('re-rendering app');
     return (
 
         <MainContainer>

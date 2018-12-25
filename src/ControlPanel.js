@@ -32,10 +32,13 @@ class ControlPanel extends Component {
     const {towers, gameState, changeMap, currentBoard} = this.props
     return(
       <ControlsContainer>
-        <div>
 
 
-          {currentBoard &&
+
+        {currentBoard &&
+          <div>
+
+
             <ControlButton onClick={this.props.startGame}>
               {!gameState && (
                 <p>Start!</p>
@@ -45,11 +48,12 @@ class ControlPanel extends Component {
               )}
 
             </ControlButton>
+            <Tower
+              canDrag={true}/>
+          </div>
+        }
 
-          }
-          <Tower
-            canDrag={true}/>
-        </div>
+
         {!currentBoard && (
 
           <div>

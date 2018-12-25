@@ -23,10 +23,11 @@ class Enemy extends Component {
   render(props) {
 
     const {enemyPositions, movementTimer} = this.props;
-        console.log(enemyPositions);
+
     let newPosition = enemyPositions[movementTimer];
     if (newPosition) {
-      console.log(newPosition);
+
+
 
       return(
         <EnemyContainer newPosition={newPosition}>

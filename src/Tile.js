@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import styled from 'styled-components'
 import { DropTarget } from 'react-dnd';
 import {TowerDrag} from './draggables/Draggable';
-import uuid from 'uuid'
+import uuid from 'uuid';
 
 const TileContainer = styled.div`
   width: 30px;

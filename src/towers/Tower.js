@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {Component} from 'react';
 import styled from 'styled-components';
 import {DragSource} from 'react-dnd'
 import {TowerDrag} from './../draggables/Draggable'
@@ -32,23 +32,36 @@ function collect(connect, monitor) {
 }
 
 
-function Tower({connectDragSource, isDragging, canDrag}) {
 
-    return connectDragSource(
-      <div
-        style={{
 
-        opacity: isDragging ? 0.5 : 1,
-        fontSize: 25,
-        fontWeight: 'bold',
-        cursor: 'move'
-      }}>
-        <TowerContainer>
-          T
-        </TowerContainer>
-      </div>
+class Tower extends Component {
+  constructor(props){
+    super(props)
 
-    );
+    this.state = {
+      towerTimer: 0
+    }
+  }
+  render() {
+    console.log(this.state.towerTimer)
+    const {connectDragSource, isDragging, canDrag} = this.props
+        return connectDragSource(
+          <div
+            style={{
+
+            opacity: isDragging ? 0.5 : 1,
+            fontSize: 25,
+            fontWeight: 'bold',
+            cursor: 'move'
+          }}>
+            <TowerContainer>
+              T
+            </TowerContainer>
+          </div>
+
+        );
+  }
+
   }
 
 

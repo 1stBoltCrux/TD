@@ -38,7 +38,6 @@ class Board extends Component {
 
   shouldComponentUpdate(nextProps){
     if (this.props.enemyPositions.length !== nextProps.enemyPositions.length) {
-      console.log('new tower added');
       return true
     } else {
       return false
@@ -56,7 +55,7 @@ class Board extends Component {
          {row.map((tile, j) => {
            const whichTile = j;
            const coords = [whichRow, whichTile]
-           const whichTower = `y${whichRow}x${whichTile}`
+           const whichTower = `${whichRow}-${whichTile}`
            return(
              <Block key={uuid()} tileType={tile}>
                <Tile
@@ -78,18 +77,10 @@ class Board extends Component {
 
 
   render() {
-
-    console.log(Object.keys(this.props.towers).length)
-
-
-
-
     return (
       <div>
 
         <BoardContainer>
-
-
 
           {this.currentMap()}
         </BoardContainer>
