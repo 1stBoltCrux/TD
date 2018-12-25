@@ -18,6 +18,7 @@ const EnemyContainer = styled.div`
   width: 600px;
 
   position: relative;
+
 `
 
 class App extends Component {
@@ -68,6 +69,18 @@ class App extends Component {
       movementTimer: timer
     })
     this.checkForEnemy();
+    if (this.state.movementTimer >= this.state.enemyPositions.length && this.state.enemyStatus) {
+      this.setState({
+        gameState: false,
+        movementTimer: 0,
+        currentBoard: null,
+        towers: {},
+        enemyPositions: [],
+        movementTimer: 0,
+        enemyHP: 100,
+        enemyStatus: true
+      })
+    }
   }
 
   startGame = () => {
