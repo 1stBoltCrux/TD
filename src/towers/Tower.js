@@ -1,7 +1,9 @@
 import React, {Component} from 'react';
 import styled from 'styled-components';
-import {DragSource} from 'react-dnd'
-import {TowerDrag} from './../draggables/Draggable'
+import {DragSource, DragLayer} from 'react-dnd'
+import {TowerDrag} from './../draggables/Draggable';
+
+
 
 const TowerContainer = styled.div`
   border-radius: 20px;
@@ -46,18 +48,28 @@ class Tower extends Component {
     console.log(this.state.towerTimer)
     const {connectDragSource, isDragging, canDrag} = this.props
         return connectDragSource(
-          <div
-            style={{
+          <div>
 
-            opacity: isDragging ? 0.5 : 1,
-            fontSize: 25,
-            fontWeight: 'bold',
-            cursor: 'move'
-          }}>
-            <TowerContainer>
-              T
-            </TowerContainer>
+
+
+            <div
+              style={{
+
+                opacity: isDragging ? 0.5 : 1,
+                  fontSize: 25,
+                  fontWeight: 'bold',
+                  cursor: 'pointer'
+              }}>
+
+              <TowerContainer>
+                T
+              </TowerContainer>
+
+
+            </div>
+
           </div>
+
 
         );
   }

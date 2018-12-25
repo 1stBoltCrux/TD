@@ -7,12 +7,23 @@ import uuid from 'uuid';
 const TileContainer = styled.div`
   width: 30px;
   height: 30px;
+  position: relative;
+`
+const Overlay = styled.div`
+  width: 90px;
+  height: 90px;
+  pointer-events: none;
+  background-color: black;
+  opacity: .2;
+  position: absolute;
+  top: -30px;
+  right: -30px;;
+
 `
 
 const tileTarget = {
 
   drop(props, monitor) {
-    console.log('tileTarget()');
   props.makeTower(props.coords, props.whichTower)
   }
 };
@@ -42,13 +53,18 @@ class Tile extends Component {
 
 
   render(){
-const {whichTower, towers, coords, connectDropTarget} = this.props
-
+const {whichTower, towers, coords, connectDropTarget, isOver} = this.props
 
     return connectDropTarget(
       <div>
-        <TileContainer>
 
+
+        <TileContainer>
+          {isOver && (
+            <Overlay>
+
+            </Overlay>
+          )}
           {
             Object.keys(towers).map(tower => {
 

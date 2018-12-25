@@ -115,6 +115,7 @@ class App extends Component {
 
     newTower[whichTower] = {
       towerElement: <Tower
+        
         canDrag={false}
         towers={this.state.towers}
         movementTimer={this.state.movementTimer} />,
