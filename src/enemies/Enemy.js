@@ -12,8 +12,8 @@ const EnemyContainer = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  top: ${props => props.newPosition.top}px;
-  left: ${props => props.newPosition.right}px;
+  transform: translate(${props => props.newPosition.right}px, ${props => props.newPosition.top}px);
+  transition: transform .75s linear;
 `
 
 
