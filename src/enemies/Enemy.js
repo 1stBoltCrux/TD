@@ -31,7 +31,7 @@ class Enemy extends Component {
 
       return(
         <EnemyContainer newPosition={newPosition}>
-          E
+          {enemyHP}
         </EnemyContainer>
       )
     } else {

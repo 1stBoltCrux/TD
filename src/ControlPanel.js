@@ -50,6 +50,7 @@ class ControlPanel extends Component {
             </ControlButton>
             <Tower
               canDrag={true}/>
+            ${this.props.cash}
           </div>
         }
 

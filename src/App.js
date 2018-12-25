@@ -33,7 +33,8 @@ class App extends Component {
       enemyPositions: [],
       movementTimer: 0,
       enemyHP: 100,
-      enemyStatus: true
+      enemyStatus: true,
+      cash: 100
     }
   }
 
@@ -78,7 +79,8 @@ class App extends Component {
         enemyPositions: [],
         movementTimer: 0,
         enemyHP: 100,
-        enemyStatus: true
+        enemyStatus: true,
+        cash: 100
       })
     }
   }
@@ -106,6 +108,9 @@ class App extends Component {
   }
 
   makeTower = (tileCoords, whichTower) => {
+    if (this.state.cash >= 20) {
+
+
     let newTower = {};
 
     newTower[whichTower] = {
@@ -119,9 +124,10 @@ class App extends Component {
     let newTowerState = Object.assign(this.state.towers, newTower);
 
     this.setState({
-      towers: newTowerState
-
+      towers: newTowerState,
+      cash: this.state.cash - 20
     })
+  }
   }
 
 checkForEnemy = () => {
@@ -177,7 +183,7 @@ checkForEnemy = () => {
           }
 
           <ControlPanel
-
+            cash={this.state.cash}
             startGame={this.startGame} gameState={this.state.gameState}
             changeMap={this.changeMap}
             currentBoard={this.state.currentBoard}/>
