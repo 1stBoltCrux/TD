@@ -10,6 +10,7 @@ const TileContainer = styled.div`
   position: relative;
 `
 const Overlay = styled.div`
+  border-radius: 40%;
   width: 90px;
   height: 90px;
   pointer-events: none;
