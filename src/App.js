@@ -43,10 +43,6 @@ class App extends Component {
     }
   }
 
-  createEnemies(){
-
-  }
-
   setEnemyPositions = () => {
     let top;
     let right;
@@ -107,6 +103,7 @@ class App extends Component {
       enemiesObject[enemyID] = {
         enemyHP: 100,
         enemyStatus: true,
+        enemyMovementTimer: Math.floor(Math.random() * 10)
       }
     })
     this.setState({
@@ -171,19 +168,43 @@ checkForEnemy = () => {
   Object.keys(this.state.towers).map(tower => {
     let towerCoords = tower.split('-')
 
+
+
+
+
     let xCoord = parseInt(towerCoords[1])
     let yCoord = parseInt(towerCoords[0])
 
-    let newPosition = this.state.enemyPositions[this.state.movementTimer];
+    Object.keys(this.state.enemies).map(enemy => {
+      const enemyTimer = this.state.movementTimer -this.state.enemies[enemy].enemyMovementTimer
+      let currentPosition = this.state.enemyPositions[enemyTimer]
 
-    if ( newPosition &&
-      ((newPosition.top / TILE_H) === yCoord + 1 || (newPosition.top / TILE_H) === yCoord - 1 || (newPosition.top / TILE_H) === yCoord) && (((newPosition.right / TILE_W) === xCoord + 1 || (newPosition.right / TILE_W) === xCoord - 1 || (newPosition.right / TILE_W) === xCoord))
-    )  {
-      this.setState({
-        enemyHP: this.state.enemyHP - 10
-      })
-      console.log(this.state.enemyHP);
-    }
+
+      if ( currentPosition &&
+        ((currentPosition.top / TILE_H) === yCoord + 1 || (currentPosition.top / TILE_H) === yCoord - 1 || (currentPosition.top / TILE_H) === yCoord) && (((currentPosition.right / TILE_W) === xCoord + 1 || (currentPosition.right / TILE_W) === xCoord - 1 || (currentPosition.right / TILE_W) === xCoord))
+      )  {
+        let thisEnemy = this.state.enemies[enemy]
+        let newEnemyObject = {}
+
+         let hurtEnemy = Object.assign(thisEnemy, {enemyHP: thisEnemy.enemyHP - 10} )
+
+         newEnemyObject[enemy] = hurtEnemy
+
+         let newEnemyState = Object.assign(this.state.enemies, newEnemyObject)
+
+
+
+
+
+        this.setState({
+          enemies: newEnemyState
+        })
+        console.log(this.state.enemies);
+      }
+
+    })
+
+
 
 
   })
@@ -192,8 +213,9 @@ checkForEnemy = () => {
 
 }
 
+
   render() {
-    console.log(this.state.enemies);
+
     return (
 
         <MainContainer>
@@ -202,8 +224,12 @@ checkForEnemy = () => {
           {this.state.currentBoard &&
             <EnemyContainer>
               {Object.keys(this.state.enemies).map(enemy => {
+
                 return (
                   <Enemy
+                    enemyMovementTimer={this.state.enemies[enemy].enemyMovementTimer}
+                    key={enemy}
+                    enemyID={enemy}
                     enemyStatus={this.state.enemyStatus}
                     enemyHP={this.state.enemyHP}
                     enemyPositions={this.state.enemyPositions}

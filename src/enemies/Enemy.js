@@ -18,22 +18,18 @@ const EnemyContainer = styled.div`
 
 
 class Enemy extends Component {
-  constructor(props){
-    super(props)
-    this.state = {
-      enemyMovementTimer: Math.floor(Math.random() * 10)
-    }
-  }
 
 
   render(props) {
-    console.log(this.state);
-    const {enemyPositions, movementTimer, enemyHP, enemyStatus} = this.props;
-    let enemyMovementTimer = movementTimer - this.state.enemyMovementTimer
-    console.log(enemyMovementTimer);
-    let newPosition = enemyPositions[enemyMovementTimer];
+
+    const {enemyPositions, movementTimer, enemyHP, enemyStatus, enemyMovementTimer } = this.props;
+    let currentMovementTimer = movementTimer - enemyMovementTimer
+
+
+
+    let newPosition = enemyPositions[currentMovementTimer];
     if (newPosition && enemyStatus) {
-      console.log(newPosition);
+
 
 
 
