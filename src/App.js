@@ -4,6 +4,7 @@ import Tower from './towers/Tower'
 import ControlPanel from './ControlPanel'
 import styled from 'styled-components'
 import Enemy from './enemies/Enemy';
+import uuid from 'uuid'
 import {TILE_H, TILE_W} from './config/movement/MovementVariables';
 
 const MainContainer = styled.div`
@@ -26,16 +27,24 @@ class App extends Component {
     super(props)
 
     this.state = {
+      level: 1,
       gameState: false,
       movementTimer: 0,
       currentBoard: null,
       towers: {},
       enemyPositions: [],
       movementTimer: 0,
-      enemyHP: 100,
+      enemyHP: 250,
       enemyStatus: true,
-      cash: 100
+      cash: 100,
+      enemies: {}
+
+
     }
+  }
+
+  createEnemies(){
+
   }
 
   setEnemyPositions = () => {
@@ -72,6 +81,7 @@ class App extends Component {
     this.checkForEnemy();
     if (this.state.movementTimer >= this.state.enemyPositions.length && this.state.enemyStatus) {
       this.setState({
+        level: 1,
         gameState: false,
         movementTimer: 0,
         currentBoard: null,
@@ -80,15 +90,36 @@ class App extends Component {
         movementTimer: 0,
         enemyHP: 100,
         enemyStatus: true,
-        cash: 100
+        cash: 100,
+        enemies: {}
       })
     }
   }
+  componentDidMount(){
+    this.makeEnemies();
+  }
+
+  makeEnemies = () => {
+    let enemiesObject = {}
+    let enemies = Array((this.state.level * 10)).fill(0)
+    enemies.forEach(enemy => {
+      let enemyID = uuid();
+      enemiesObject[enemyID] = {
+        enemyHP: 100,
+        enemyStatus: true,
+      }
+    })
+    this.setState({
+      enemies: enemiesObject
+    })
+  }
+
 
   startGame = () => {
     this.setState({
       gameState: !this.state.gameState
     })
+
     var alterGameState = setInterval(() => {
       if (this.state.gameState === true) {
         this.updateTimer();
@@ -115,7 +146,7 @@ class App extends Component {
 
     newTower[whichTower] = {
       towerElement: <Tower
-        
+
         canDrag={false}
         towers={this.state.towers}
         movementTimer={this.state.movementTimer} />,
@@ -139,10 +170,11 @@ checkForEnemy = () => {
   }
   Object.keys(this.state.towers).map(tower => {
     let towerCoords = tower.split('-')
+
     let xCoord = parseInt(towerCoords[1])
     let yCoord = parseInt(towerCoords[0])
-    let newPosition = this.state.enemyPositions[this.state.movementTimer];
 
+    let newPosition = this.state.enemyPositions[this.state.movementTimer];
 
     if ( newPosition &&
       ((newPosition.top / TILE_H) === yCoord + 1 || (newPosition.top / TILE_H) === yCoord - 1 || (newPosition.top / TILE_H) === yCoord) && (((newPosition.right / TILE_W) === xCoord + 1 || (newPosition.right / TILE_W) === xCoord - 1 || (newPosition.right / TILE_W) === xCoord))
@@ -161,6 +193,7 @@ checkForEnemy = () => {
 }
 
   render() {
+    console.log(this.state.enemies);
     return (
 
         <MainContainer>
@@ -168,12 +201,17 @@ checkForEnemy = () => {
 
           {this.state.currentBoard &&
             <EnemyContainer>
-              <Enemy
-                enemyStatus={this.state.enemyStatus}
-                enemyHP={this.state.enemyHP}
-                enemyPositions={this.state.enemyPositions}
-                movementTimer={this.state.movementTimer}
-              />
+              {Object.keys(this.state.enemies).map(enemy => {
+                return (
+                  <Enemy
+                    enemyStatus={this.state.enemyStatus}
+                    enemyHP={this.state.enemyHP}
+                    enemyPositions={this.state.enemyPositions}
+                    movementTimer={this.state.movementTimer}
+                  />
+                )
+              })}
+
               <Board
                 enemyPositions={this.state.enemyPositions}
                 towers={this.state.towers}
