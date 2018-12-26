@@ -22,7 +22,9 @@ class Enemy extends Component {
 
   render(props) {
 
-    const {enemyPositions, movementTimer, enemyHP, enemyStatus, enemyMovementTimer } = this.props;
+    const {enemyPositions, movementTimer, enemyID, enemyHP, enemyStatus, enemyMovementTimer, enemies } = this.props;
+
+    console.log(enemies);
     let currentMovementTimer = movementTimer - enemyMovementTimer
 
 
@@ -35,7 +37,7 @@ class Enemy extends Component {
 
       return(
         <EnemyContainer newPosition={newPosition}>
-          {enemyHP}
+          {enemies[enemyID].enemyHP}
         </EnemyContainer>
       )
     } else {

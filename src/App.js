@@ -167,11 +167,6 @@ checkForEnemy = () => {
   }
   Object.keys(this.state.towers).map(tower => {
     let towerCoords = tower.split('-')
-
-
-
-
-
     let xCoord = parseInt(towerCoords[1])
     let yCoord = parseInt(towerCoords[0])
 
@@ -183,18 +178,13 @@ checkForEnemy = () => {
       if ( currentPosition &&
         ((currentPosition.top / TILE_H) === yCoord + 1 || (currentPosition.top / TILE_H) === yCoord - 1 || (currentPosition.top / TILE_H) === yCoord) && (((currentPosition.right / TILE_W) === xCoord + 1 || (currentPosition.right / TILE_W) === xCoord - 1 || (currentPosition.right / TILE_W) === xCoord))
       )  {
+
         let thisEnemy = this.state.enemies[enemy]
         let newEnemyObject = {}
+        let hurtEnemy = Object.assign(thisEnemy, {enemyHP: thisEnemy.enemyHP - 10} )
 
-         let hurtEnemy = Object.assign(thisEnemy, {enemyHP: thisEnemy.enemyHP - 10} )
-
-         newEnemyObject[enemy] = hurtEnemy
-
-         let newEnemyState = Object.assign(this.state.enemies, newEnemyObject)
-
-
-
-
+        newEnemyObject[enemy] = hurtEnemy
+        let newEnemyState = Object.assign(this.state.enemies, newEnemyObject)
 
         this.setState({
           enemies: newEnemyState
@@ -228,6 +218,7 @@ checkForEnemy = () => {
                 return (
                   <Enemy
                     enemyMovementTimer={this.state.enemies[enemy].enemyMovementTimer}
+                    enemies={this.state.enemies}
                     key={enemy}
                     enemyID={enemy}
                     enemyStatus={this.state.enemyStatus}
