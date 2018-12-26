@@ -45,7 +45,7 @@ class Tower extends Component {
     }
   }
   render() {
-    console.log(this.state.towerTimer)
+
     const {connectDragSource, isDragging, canDrag} = this.props
         return connectDragSource(
           <div>

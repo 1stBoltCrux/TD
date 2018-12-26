@@ -24,13 +24,13 @@ class Enemy extends Component {
 
     const {enemyPositions, movementTimer, enemyID, enemyHP, enemyStatus, enemyMovementTimer, enemies } = this.props;
 
-    console.log(enemies);
+
     let currentMovementTimer = movementTimer - enemyMovementTimer
 
 
 
     let newPosition = enemyPositions[currentMovementTimer];
-    if (newPosition && enemyStatus) {
+    if (newPosition && enemies[enemyID].enemyStatus) {
 
 
 
@@ -42,7 +42,7 @@ class Enemy extends Component {
       )
     } else {
       return(
-        ''
+        null
       )
     }
 

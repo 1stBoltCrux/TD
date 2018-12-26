@@ -75,7 +75,7 @@ class App extends Component {
       movementTimer: timer
     })
     this.checkForEnemy();
-    if (this.state.movementTimer >= this.state.enemyPositions.length && this.state.enemyStatus) {
+    if (this.state.movementTimer >= this.state.enemyPositions.length + 10 && Object.keys(this.state.enemies).length > 0) {
       this.setState({
         level: 1,
         gameState: false,
@@ -91,13 +91,14 @@ class App extends Component {
       })
     }
   }
+
   componentDidMount(){
     this.makeEnemies();
   }
 
   makeEnemies = () => {
     let enemiesObject = {}
-    let enemies = Array((this.state.level * 10)).fill(0)
+    let enemies = Array((this.state.level * 2)).fill(0)
     enemies.forEach(enemy => {
       let enemyID = uuid();
       enemiesObject[enemyID] = {
@@ -113,6 +114,9 @@ class App extends Component {
 
 
   startGame = () => {
+    if (Object.keys(this.state.enemies).length === 0 ) {
+      this.makeEnemies()
+    }
     this.setState({
       gameState: !this.state.gameState
     })
@@ -124,7 +128,7 @@ class App extends Component {
       if (this.state.gameState === false) {
         clearInterval(alterGameState)
       }
-    }, 750)
+    }, 400)
   }
 
   changeMap = (board) => {
@@ -165,12 +169,16 @@ checkForEnemy = () => {
       enemyStatus: false
     })
   }
+
+
   Object.keys(this.state.towers).map(tower => {
     let towerCoords = tower.split('-')
     let xCoord = parseInt(towerCoords[1])
     let yCoord = parseInt(towerCoords[0])
 
     Object.keys(this.state.enemies).map(enemy => {
+
+
       const enemyTimer = this.state.movementTimer -this.state.enemies[enemy].enemyMovementTimer
       let currentPosition = this.state.enemyPositions[enemyTimer]
 
@@ -181,7 +189,8 @@ checkForEnemy = () => {
 
         let thisEnemy = this.state.enemies[enemy]
         let newEnemyObject = {}
-        let hurtEnemy = Object.assign(thisEnemy, {enemyHP: thisEnemy.enemyHP - 10} )
+        let hurtEnemy = Object.assign(thisEnemy, {enemyHP: thisEnemy.enemyHP - 10,
+        enemyStatus: thisEnemy.enemyHP > 0 ? true : false} )
 
         newEnemyObject[enemy] = hurtEnemy
         let newEnemyState = Object.assign(this.state.enemies, newEnemyObject)
@@ -189,7 +198,12 @@ checkForEnemy = () => {
         this.setState({
           enemies: newEnemyState
         })
-        console.log(this.state.enemies);
+        if (!this.state.enemies[enemy].enemyStatus) {
+          delete this.state.enemies[enemy]
+
+        }
+
+
       }
 
     })
