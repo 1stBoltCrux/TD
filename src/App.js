@@ -27,7 +27,8 @@ class App extends Component {
     super(props)
 
     this.state = {
-      level: 5,
+      deadEnemies: [],
+      level: 1,
       gameState: false,
       movementTimer: 0,
       currentBoard: null,
@@ -36,7 +37,7 @@ class App extends Component {
       movementTimer: 0,
       enemyHP: 250,
       enemyStatus: true,
-      cash: 100,
+      cash: 120,
       enemies: {}
     }
   }
@@ -76,6 +77,7 @@ class App extends Component {
     this.checkForEnemy();
     if (this.state.movementTimer >= this.state.enemyPositions.length + 10 && Object.keys(this.state.enemies).length > 0) {
       this.setState({
+        deadEnemies: [],
         level: 1,
         gameState: false,
         movementTimer: 0,
@@ -85,7 +87,7 @@ class App extends Component {
         movementTimer: 0,
         enemyHP: 100,
         enemyStatus: true,
-        cash: 100,
+        cash: 120,
         enemies: {}
       })
     }
@@ -139,7 +141,7 @@ class App extends Component {
   }
 
   makeTower = (tileCoords, whichTower) => {
-    if (this.state.cash >= 20) {
+    if (this.state.cash >= 40) {
 
 
       let newTower = {};
@@ -159,7 +161,7 @@ class App extends Component {
 
         this.setState({
           towers: newTowerState,
-          cash: this.state.cash - 20
+          cash: this.state.cash - 40
         })
       }
     }
@@ -209,7 +211,7 @@ class App extends Component {
               let thisEnemy = this.state.enemies[this.state.towers[tower].towerTarget[0]]
               let newEnemyObject = {}
               let hurtEnemy = Object.assign(thisEnemy, {
-                enemyHP: thisEnemy.enemyHP - 10,
+                enemyHP: thisEnemy.enemyHP - 60,
                 enemyStatus: thisEnemy.enemyHP > 0 ? true : false,
               })
               newEnemyObject[this.state.towers[tower].towerTarget[0]] = hurtEnemy
@@ -220,7 +222,12 @@ class App extends Component {
               })
 
               if (!this.state.enemies[enemy].enemyStatus) {
+                let deadEnemy = enemy;
+                this.setState({
+                  deadEnemies: [...this.state.deadEnemies, deadEnemy]
+                })
                 delete this.state.enemies[enemy]
+                console.log(this.state.deadEnemies);
               }
 
             }
@@ -228,7 +235,7 @@ class App extends Component {
 
             //keeps empty target array from causing error on hurtEnemy definition -----end //
 
-          } else if (this.state.towers[tower].towerTarget.includes(enemy) ){
+          } else if (this.state.towers[tower].towerTarget.includes(enemy) ||  this.state.deadEnemies.includes(this.state.towers[tower].towerTarget[0])){
             console.log('target changed');
             let thisTower = this.state.towers[tower]
             let newTowerObject = {}
