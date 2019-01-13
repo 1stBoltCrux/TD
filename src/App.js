@@ -8,17 +8,17 @@ import uuid from 'uuid'
 import {TILE_H, TILE_W} from './config/movement/MovementVariables';
 
 const MainContainer = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 20px;
+display: flex;
+align-items: center;
+justify-content: center;
+padding: 20px;
 `
 
 const EnemyContainer = styled.div`
-  height: 600px;
-  width: 600px;
+height: 600px;
+width: 600px;
 
-  position: relative;
+position: relative;
 
 `
 
@@ -27,7 +27,7 @@ class App extends Component {
     super(props)
 
     this.state = {
-      level: 1,
+      level: 5,
       gameState: false,
       movementTimer: 0,
       currentBoard: null,
@@ -38,8 +38,6 @@ class App extends Component {
       enemyStatus: true,
       cash: 100,
       enemies: {}
-
-
     }
   }
 
@@ -56,6 +54,7 @@ class App extends Component {
           enemyPositions.push({top:top, right:right, tile: tile})
         }
       })
+
     })
     enemyPositions.sort((position1, position2) => {
       if( position1.tile < position2.tile ) {
@@ -102,9 +101,9 @@ class App extends Component {
     enemies.forEach(enemy => {
       let enemyID = uuid();
       enemiesObject[enemyID] = {
-        enemyHP: 100,
+        enemyHP: 250,
         enemyStatus: true,
-        enemyMovementTimer: Math.floor(Math.random() * 10)
+        enemyMovementTimer: Math.floor(Math.random() * 10),
       }
     })
     this.setState({
@@ -135,7 +134,7 @@ class App extends Component {
     this.setState({
       currentBoard: board
     }, ()=> {
-            this.setEnemyPositions();
+      this.setEnemyPositions();
     })
   }
 
@@ -143,88 +142,116 @@ class App extends Component {
     if (this.state.cash >= 20) {
 
 
-    let newTower = {};
+      let newTower = {};
 
-    newTower[whichTower] = {
-      towerElement: <Tower
+      newTower[whichTower] = {
+        towerElement: <Tower
 
-        canDrag={false}
-        towers={this.state.towers}
-        movementTimer={this.state.movementTimer} />,
-      towerCoords: tileCoords
-    }
-
-    let newTowerState = Object.assign(this.state.towers, newTower);
-
-    this.setState({
-      towers: newTowerState,
-      cash: this.state.cash - 20
-    })
-  }
-  }
-
-checkForEnemy = () => {
-  if (this.state.enemyHP <= 0 ) {
-    this.setState({
-      enemyStatus: false
-    })
-  }
-
-
-  Object.keys(this.state.towers).map(tower => {
-    let towerCoords = tower.split('-')
-    let xCoord = parseInt(towerCoords[1])
-    let yCoord = parseInt(towerCoords[0])
-
-    Object.keys(this.state.enemies).map(enemy => {
-
-
-      const enemyTimer = this.state.movementTimer -this.state.enemies[enemy].enemyMovementTimer
-      let currentPosition = this.state.enemyPositions[enemyTimer]
-
-
-      if ( currentPosition &&
-        ((currentPosition.top / TILE_H) === yCoord + 1 || (currentPosition.top / TILE_H) === yCoord - 1 || (currentPosition.top / TILE_H) === yCoord) && (((currentPosition.right / TILE_W) === xCoord + 1 || (currentPosition.right / TILE_W) === xCoord - 1 || (currentPosition.right / TILE_W) === xCoord))
-      )  {
-
-        let thisEnemy = this.state.enemies[enemy]
-        let newEnemyObject = {}
-        let hurtEnemy = Object.assign(thisEnemy, {enemyHP: thisEnemy.enemyHP - 10,
-        enemyStatus: thisEnemy.enemyHP > 0 ? true : false} )
-
-        newEnemyObject[enemy] = hurtEnemy
-        let newEnemyState = Object.assign(this.state.enemies, newEnemyObject)
-
-        this.setState({
-          enemies: newEnemyState
-        })
-        if (!this.state.enemies[enemy].enemyStatus) {
-          delete this.state.enemies[enemy]
+          canDrag={false}
+          towers={this.state.towers}
+          movementTimer={this.state.movementTimer} />,
+          towerCoords: tileCoords,
+          towerTarget: [],
 
         }
 
+        let newTowerState = Object.assign(this.state.towers, newTower);
 
+        this.setState({
+          towers: newTowerState,
+          cash: this.state.cash - 20
+        })
+      }
+    }
+
+    checkForEnemy = () => {
+      if (this.state.enemyHP <= 0 ) {
+        this.setState({
+          enemyStatus: false
+        })
       }
 
-    })
+
+      Object.keys(this.state.towers).map(tower => {
+        let towerCoords = tower.split('-')
+        let xCoord = parseInt(towerCoords[1])
+        let yCoord = parseInt(towerCoords[0])
+
+        Object.keys(this.state.enemies).map(enemy => {
+
+          const enemyTimer = this.state.movementTimer -this.state.enemies[enemy].enemyMovementTimer
+          let currentPosition = this.state.enemyPositions[enemyTimer]
 
 
+          if ( currentPosition &&
+            ((currentPosition.top / TILE_H) === yCoord + 1 || (currentPosition.top / TILE_H) === yCoord - 1 || (currentPosition.top / TILE_H) === yCoord) && (((currentPosition.right / TILE_W) === xCoord + 1 || (currentPosition.right / TILE_W) === xCoord - 1 || (currentPosition.right / TILE_W) === xCoord))
+          )  {
 
 
-  })
+            if (this.state.towers[tower].towerTarget.length < 1) {
+              console.log('target acquired');
+              let thisTower = this.state.towers[tower]
+              let newTowerObject = {}
+              let towerWithTarget = Object.assign(thisTower, {towerTarget: [...this.state.towers[tower].towerTarget, enemy]})
+
+              newTowerObject[tower] = towerWithTarget
+              let newTowerState = Object.assign(this.state.towers, newTowerObject)
+
+              this.setState({
+                towers: newTowerState
+              })
+
+            }
+            //keeps empty target array from causing error on hurtEnemy definition//
+
+            if (this.state.enemies[this.state.towers[tower].towerTarget[0]] && (this.state.towers[tower].towerTarget[0] === enemy)) {
+              console.log('target hit');
+              let thisEnemy = this.state.enemies[this.state.towers[tower].towerTarget[0]]
+              let newEnemyObject = {}
+              let hurtEnemy = Object.assign(thisEnemy, {
+                enemyHP: thisEnemy.enemyHP - 10,
+                enemyStatus: thisEnemy.enemyHP > 0 ? true : false,
+              })
+              newEnemyObject[this.state.towers[tower].towerTarget[0]] = hurtEnemy
+              let newEnemyState = Object.assign(this.state.enemies, newEnemyObject)
+
+              this.setState({
+                enemies: newEnemyState
+              })
+
+              if (!this.state.enemies[enemy].enemyStatus) {
+                delete this.state.enemies[enemy]
+              }
+
+            }
 
 
+            //keeps empty target array from causing error on hurtEnemy definition -----end //
 
-}
+          } else if (this.state.towers[tower].towerTarget.includes(enemy) ){
+            console.log('target changed');
+            let thisTower = this.state.towers[tower]
+            let newTowerObject = {}
+            let towerWithTarget = Object.assign(thisTower, {towerTarget: []})
+            newTowerObject[tower] = towerWithTarget
+            let newTowerState = Object.assign(this.state.towers, newTowerObject)
+
+            this.setState({
+              towers: newTowerState
+            })
+
+          }
+
+        })
+      })
+    }
 
 
-  render() {
+    render() {
 
-    return (
+      return (
 
         <MainContainer>
-
-
           {this.state.currentBoard &&
             <EnemyContainer>
               {Object.keys(this.state.enemies).map(enemy => {
@@ -261,8 +288,8 @@ checkForEnemy = () => {
 
 
 
-    );
-  }
-}
+          );
+        }
+      }
 
-export default App;
+      export default App;

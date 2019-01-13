@@ -4,7 +4,7 @@ import styled from 'styled-components'
 const EnemyContainer = styled.div`
   z-index: 2;
   position: absolute;
-  background-color: black;
+  background-color: ${props => props.randomColor};
   width: 30px;
   height: 30px;
   border-radius: 20px;
@@ -15,17 +15,22 @@ const EnemyContainer = styled.div`
   transform: translate(${props => props.newPosition.right}px, ${props => props.newPosition.top}px);
   transition: transform .2s linear;
 `
-
+    const enemyColors = ['red', 'green', 'blue', 'orange', 'teal'];
 
 class Enemy extends Component {
-
+  constructor(props){
+    super(props)
+    this.state = {
+      randomColor: enemyColors[Math.floor(Math.random() * enemyColors.length)]
+    }
+  }
 
   render(props) {
 
     const {enemyPositions, movementTimer, enemyID, enemyHP, enemyStatus, enemyMovementTimer, enemies } = this.props;
 
-
     let currentMovementTimer = movementTimer - enemyMovementTimer
+
 
 
 
@@ -36,7 +41,9 @@ class Enemy extends Component {
 
 
       return(
-        <EnemyContainer newPosition={newPosition}>
+        <EnemyContainer
+          newPosition={newPosition}
+          randomColor={this.state.randomColor}>
           {enemies[enemyID].enemyHP}
         </EnemyContainer>
       )
