@@ -17,9 +17,7 @@ padding: 20px;
 const EnemyContainer = styled.div`
 height: 600px;
 width: 600px;
-
 position: relative;
-
 `
 
 class App extends Component {
@@ -28,7 +26,7 @@ class App extends Component {
 
     this.state = {
       deadEnemies: [],
-      level: 22,
+      level: 1,
       gameState: false,
       movementTimer: 0,
       currentBoard: null,
@@ -97,7 +95,8 @@ class App extends Component {
       movementTimer: timer
     })
     this.checkForEnemy();
-    if (this.state.movementTimer >= this.state.enemyPositions.length + 10 && Object.keys(this.state.enemies).length > 0) {
+    // lose game and restart //
+    if (this.state.movementTimer >= this.state.enemyPositions.length + this.state.randomPosition.length && Object.keys(this.state.enemies).length > 0) {
       this.setState({
         deadEnemies: [],
         level: 1,
@@ -110,8 +109,27 @@ class App extends Component {
         enemyHP: 100,
         enemyStatus: true,
         cash: 120,
-        enemies: {}
+        enemies: {},
+        randomPosition: []
       })
+    } else if (this.state.deadEnemies.length === this.state.level * 2) {
+      this.setState({
+        deadEnemies: [],
+        level: this.state.level + 1,
+        gameState: false,
+        movementTimer: 0,
+        currentBoard: null,
+        towers: {},
+        enemyPositions: [],
+        movementTimer: 0,
+        enemyHP: 100,
+        enemyStatus: true,
+        cash: 120,
+        enemies: {},
+        randomPosition: []
+      })
+      this.setEnemyTimer();
+      this.makeEnemies();
     }
   }
 
@@ -280,6 +298,7 @@ class App extends Component {
 
 
     render() {
+      console.log(this.state);
       return (
 
         <MainContainer>
