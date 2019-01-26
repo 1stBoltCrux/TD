@@ -26,14 +26,14 @@ class App extends Component {
 
     this.state = {
       deadEnemies: [],
-      level: 1,
+      level: 10,
       gameState: false,
       movementTimer: 0,
       currentBoard: null,
       towers: {},
       enemyPositions: [],
       movementTimer: 0,
-      enemyHP: 250,
+      enemyHP: 100,
       enemyStatus: true,
       cash: 120,
       enemies: {},
@@ -112,6 +112,8 @@ class App extends Component {
         enemies: {},
         randomPosition: []
       })
+      this.setEnemyTimer();
+      this.makeEnemies();
     } else if (this.state.deadEnemies.length === this.state.level * 2) {
       this.setState({
         deadEnemies: [],
@@ -145,7 +147,7 @@ class App extends Component {
     this.state.randomPosition.forEach(enemyTimer => {
       let enemyID = uuid();
       enemiesObject[enemyID] = {
-        enemyHP: 250,
+        enemyHP: 100,
         enemyStatus: true,
         enemyMovementTimer: enemyTimer,
       }
@@ -271,6 +273,17 @@ class App extends Component {
                 })
                 delete this.state.enemies[enemy]
                 console.log('enemy eliminated');
+
+                //this is repetitive, should be turned into a single function as it is repeated in the target changed conditional
+                let thisTower = this.state.towers[tower]
+                let newTowerObject = {}
+                let towerWithTarget = Object.assign(thisTower, {towerTarget: []})
+                newTowerObject[tower] = towerWithTarget
+                let newTowerState = Object.assign(this.state.towers, newTowerObject)
+
+                this.setState({
+                  towers: newTowerState
+                })
               }
 
             }
@@ -298,7 +311,6 @@ class App extends Component {
 
 
     render() {
-      console.log(this.state);
       return (
 
         <MainContainer>
