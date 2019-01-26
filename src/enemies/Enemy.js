@@ -18,6 +18,7 @@ const EnemyContainer = styled.div`
     const enemyColors = ['red', 'green', 'blue', 'orange', 'teal'];
 
 class Enemy extends Component {
+
   constructor(props){
     super(props)
     this.state = {
@@ -25,9 +26,14 @@ class Enemy extends Component {
     }
   }
 
+
+
+
+
   render(props) {
 
     const {enemyPositions, movementTimer, enemyID, enemyHP, enemyStatus, enemyMovementTimer, enemies } = this.props;
+
 
     let currentMovementTimer = movementTimer - enemyMovementTimer
 

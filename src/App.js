@@ -28,7 +28,7 @@ class App extends Component {
 
     this.state = {
       deadEnemies: [],
-      level: 1,
+      level: 22,
       gameState: false,
       movementTimer: 0,
       currentBoard: null,
@@ -38,7 +38,8 @@ class App extends Component {
       enemyHP: 250,
       enemyStatus: true,
       cash: 120,
-      enemies: {}
+      enemies: {},
+      randomPosition: []
     }
   }
 
@@ -68,6 +69,27 @@ class App extends Component {
 
   }
 
+  setEnemyTimer = () => {
+    let possiblePositions = [];
+    let enemies = Array((this.state.level * 2)).fill(0)
+  enemies.forEach((enemy, index) => {
+      possiblePositions.push(index)
+    })
+    let randomPosition = [];
+    let i = possiblePositions.length;
+    let j = 0;
+
+    while (i--) {
+      j = Math.floor(Math.random() * (i+1));
+      randomPosition.push(possiblePositions[j])
+      possiblePositions.splice(j,1)
+
+    }
+    this.setState({
+      randomPosition: randomPosition
+    })
+  }
+
   updateTimer = () => {
     let timer = this.state.movementTimer;
     timer ++
@@ -94,23 +116,26 @@ class App extends Component {
   }
 
   componentDidMount(){
+    this.setEnemyTimer();
     this.makeEnemies();
   }
 
   makeEnemies = () => {
+
     let enemiesObject = {}
-    let enemies = Array((this.state.level * 2)).fill(0)
-    enemies.forEach(enemy => {
+
+    this.state.randomPosition.forEach(enemyTimer => {
       let enemyID = uuid();
       enemiesObject[enemyID] = {
         enemyHP: 250,
         enemyStatus: true,
-        enemyMovementTimer: Math.floor(Math.random() * 10),
+        enemyMovementTimer: enemyTimer,
       }
     })
     this.setState({
-      enemies: enemiesObject
+      enemies: enemiesObject,
     })
+
   }
 
 
@@ -227,7 +252,7 @@ class App extends Component {
                   deadEnemies: [...this.state.deadEnemies, deadEnemy]
                 })
                 delete this.state.enemies[enemy]
-                console.log(this.state.deadEnemies);
+                console.log('enemy eliminated');
               }
 
             }
@@ -255,7 +280,6 @@ class App extends Component {
 
 
     render() {
-
       return (
 
         <MainContainer>
