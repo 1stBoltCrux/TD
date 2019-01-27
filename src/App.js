@@ -26,7 +26,7 @@ class App extends Component {
 
     this.state = {
       deadEnemies: [],
-      level: 10,
+      level: 1,
       gameState: false,
       movementTimer: 0,
       currentBoard: null,
@@ -37,7 +37,7 @@ class App extends Component {
       enemyStatus: true,
       cash: 120,
       enemies: {},
-      randomPosition: []
+      randomPosition: [],
     }
   }
 
@@ -159,22 +159,25 @@ class App extends Component {
   }
 
 
-  startGame = () => {
+  startGame = (start) => {
+
+
     if (Object.keys(this.state.enemies).length === 0 ) {
       this.makeEnemies()
     }
-    this.setState({
-      gameState: !this.state.gameState
-    })
-
-    var alterGameState = setInterval(() => {
-      if (this.state.gameState === true) {
+if (start) {
+  this.setState({
+    gameState: !this.state.gameState,
+    interval: setInterval(() => {
         this.updateTimer();
-      }
-      if (this.state.gameState === false) {
-        clearInterval(alterGameState)
-      }
     }, 400)
+  })
+} else {
+  this.setState({
+    gameState: !this.state.gameState
+  })
+  clearInterval(this.state.interval)
+}
   }
 
   changeMap = (board) => {
@@ -311,6 +314,7 @@ class App extends Component {
 
 
     render() {
+
       return (
 
         <MainContainer>

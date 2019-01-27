@@ -29,6 +29,7 @@ class ControlPanel extends Component {
   // }
 
   render(props) {
+
     const {towers, gameState, changeMap, currentBoard} = this.props
     return(
       <ControlsContainer>
@@ -38,16 +39,19 @@ class ControlPanel extends Component {
         {currentBoard &&
           <div>
 
-
-            <ControlButton onClick={this.props.startGame}>
-              {!gameState && (
+            {!gameState && (
+              <ControlButton onClick={()=> this.props.startGame(true)}>
                 <p>Start!</p>
-              )}
-              {gameState && (
-                <p>Stop!</p>
-              )}
+              </ControlButton>
+            )}
+            {gameState && (
 
-            </ControlButton>
+              <ControlButton onClick={() => this.props.startGame(false)}>
+                <p>Stop!</p>
+              </ControlButton>
+
+            )}
+
             <Tower
               canDrag={true}/>
             ${this.props.cash}
