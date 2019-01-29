@@ -19,6 +19,7 @@ const towerSource = {
     props.pickTowerType({towerInfo: {
       type: 'Tower',
       cost: 40,
+      range: 1,
     }})
     return {};
   },

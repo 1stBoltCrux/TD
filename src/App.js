@@ -27,7 +27,7 @@ class App extends Component {
 
     this.state = {
       deadEnemies: [],
-      level: 12,
+      level: 10,
       gameState: false,
       movementTimer: 0,
       currentBoard: null,
@@ -41,6 +41,10 @@ class App extends Component {
       randomPosition: [],
       towerTypePicked: null,
     }
+  }
+
+  passOverlayToTile = () => {
+    return this.state.towerTypePicked.towerInfo.range
   }
 
 
@@ -231,7 +235,7 @@ if (start) {
               movementTimer={this.state.movementTimer} />,
               towerCoords: tileCoords,
               towerTarget: [],
-              range: 20
+              range: 7
             }
             break;
 
@@ -268,16 +272,12 @@ if (start) {
           const enemyTimer = this.state.movementTimer -this.state.enemies[enemy].enemyMovementTimer
           let currentPosition = this.state.enemyPositions[enemyTimer]
 
-
-          // if ( currentPosition &&
-          //   ((currentPosition.top / TILE_H) === yCoord + 1 || (currentPosition.top / TILE_H) === yCoord - 1 || (currentPosition.top / TILE_H) === yCoord) && (((currentPosition.right / TILE_W) === xCoord + 1 || (currentPosition.right / TILE_W) === xCoord - 1 || (currentPosition.right / TILE_W) === xCoord))
-          // )  {
+          //tower range must be an odd number, this is so it works in tandem with the Tile 'overlay' styled component width/height and position properties//
 
           if ( currentPosition &&
-            ((currentPosition.top / TILE_H) <= yCoord + towerRange && (currentPosition.top / TILE_H) >= yCoord - towerRange)  && ((currentPosition.right / TILE_W) <= xCoord + towerRange && (currentPosition.right / TILE_W) >= xCoord - towerRange)
+            ((currentPosition.top / TILE_H) <= yCoord + ((towerRange + 1) / 2 ) && (currentPosition.top / TILE_H) >= yCoord - ((towerRange + 1) / 2 ))  && ((currentPosition.right / TILE_W) <= xCoord + ((towerRange + 1) / 2 ) && (currentPosition.right / TILE_W) >= xCoord - ((towerRange + 1) / 2 ))
           )  {
             console.log(this.state.towers[tower].range);
-
 
             if (this.state.towers[tower].towerTarget.length < 1) {
               console.log('target acquired');
@@ -379,10 +379,12 @@ if (start) {
               })}
 
               <Board
+                passOverlayToTile={this.passOverlayToTile}
                 enemyPositions={this.state.enemyPositions}
                 towers={this.state.towers}
                 makeTower={this.makeTower}
-                gameState={this.state.gameState} movementTimer={this.state.movementTimer}
+                gameState={this.state.gameState}
+                movementTimer={this.state.movementTimer}
                 currentBoard={this.state.currentBoard}/>
             </EnemyContainer>
           }

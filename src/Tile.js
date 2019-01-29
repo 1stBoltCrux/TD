@@ -9,16 +9,20 @@ width: 30px;
 height: 30px;
 position: relative;
 `
+
+//tower range must be an odd number, this is so it works in tandem with the Tile 'overlay' styled component width/height and position properties//
+
 const Overlay = styled.div`
-border-radius: 40%;
-width: 90px;
-height: 90px;
+border: 2px solid white;
+width: ${props => (props.passOverlayToTile * 30) + 60}px;
+height: ${props => (props.passOverlayToTile * 30) + 60}px;
 pointer-events: none;
-background-color: black;
-opacity: .2;
+background-color: red;
+opacity: .3;
+box-sizing: border-box;
 position: absolute;
-top: -30px;
-right: -30px;;
+top: ${props => (props.passOverlayToTile * - 15) - 15}px;
+right: ${props => (props.passOverlayToTile * - 15) - 15}px;
 
 `
 
@@ -42,13 +46,18 @@ function collect(connect, monitor) {
 
 class Tile extends Component {
 
+  test = () => {
+    console.log(this.props.passOverlayToTile());
+  }
+
   render(){
     const {whichTower, towers, coords, connectDropTarget, isOver, tileType} = this.props
-
     if (tileType !== 0) {
       return (
         <div>
-          <TileContainer>
+          <TileContainer
+            onClick={()=> this.test()}
+          >
             {
               Object.keys(towers).map(tower => {
 
@@ -70,7 +79,8 @@ class Tile extends Component {
         <div>
           <TileContainer>
             {isOver && (
-              <Overlay>
+              <Overlay
+                passOverlayToTile={this.props.passOverlayToTile()}>
 
               </Overlay>
             )}

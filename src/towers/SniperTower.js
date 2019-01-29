@@ -19,6 +19,7 @@ const towerSource = {
     props.pickTowerType({towerInfo: {
       type: 'SniperTower',
       cost: 80,
+      range: 7,
     }})
     return {};
   },

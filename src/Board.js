@@ -9,6 +9,7 @@ import {TILE_H, TILE_W} from './config/movement/MovementVariables';
 
 const BoardContainer = styled.div`
   position: relative;
+  overflow: hidden;
 `
 
 const Block = styled.div`
@@ -59,7 +60,7 @@ class Board extends Component {
            return(
              <Block key={uuid()} tileType={tile}>
                <Tile
-
+                 passOverlayToTile={this.props.passOverlayToTile}
                  makeTower={this.props.makeTower}
                  towers={this.props.towers}
                  key={uuid()}
