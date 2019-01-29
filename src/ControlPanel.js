@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import {BoardOne, BoardTwo, BoardThree} from './config/board/Boards';
-import Tower from './towers/Tower'
-import styled from 'styled-components'
+import Tower from './towers/Tower';
+import SniperTower from './towers/SniperTower';
+import styled from 'styled-components';
 
 const ControlsContainer = styled.div`
   text-align: center;
@@ -30,7 +31,7 @@ class ControlPanel extends Component {
 
   render(props) {
 
-    const {towers, gameState, changeMap, currentBoard} = this.props
+    const {towers, gameState, changeMap, currentBoard, pickTowerType} = this.props
     return(
       <ControlsContainer>
 
@@ -53,6 +54,11 @@ class ControlPanel extends Component {
             )}
 
             <Tower
+              pickTowerType={pickTowerType}
+              canDrag={true}
+            />
+            <SniperTower
+              pickTowerType={pickTowerType}
               canDrag={true}/>
             ${this.props.cash}
           </div>

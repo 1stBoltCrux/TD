@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import Board from './Board'
 import Tower from './towers/Tower'
+import SniperTower from './towers/SniperTower'
 import ControlPanel from './ControlPanel'
 import styled from 'styled-components'
 import Enemy from './enemies/Enemy';
@@ -26,7 +27,7 @@ class App extends Component {
 
     this.state = {
       deadEnemies: [],
-      level: 1,
+      level: 12,
       gameState: false,
       movementTimer: 0,
       currentBoard: null,
@@ -38,8 +39,11 @@ class App extends Component {
       cash: 120,
       enemies: {},
       randomPosition: [],
+      towerTypePicked: null,
     }
   }
+
+
 
   setEnemyPositions = () => {
     let top;
@@ -77,12 +81,14 @@ class App extends Component {
     let i = possiblePositions.length;
     let j = 0;
 
+
     while (i--) {
       j = Math.floor(Math.random() * (i+1));
       randomPosition.push(possiblePositions[j])
       possiblePositions.splice(j,1)
 
     }
+    console.log(randomPosition);
     this.setState({
       randomPosition: randomPosition
     })
@@ -110,8 +116,9 @@ class App extends Component {
         enemyStatus: true,
         cash: 120,
         enemies: {},
-        randomPosition: []
-      })
+        randomPosition: [],
+        interval: null
+      }, clearInterval(this.state.interval))
       this.setEnemyTimer();
       this.makeEnemies();
     } else if (this.state.deadEnemies.length === this.state.level * 2) {
@@ -128,8 +135,9 @@ class App extends Component {
         enemyStatus: true,
         cash: 120,
         enemies: {},
-        randomPosition: []
-      })
+        randomPosition: [],
+        interval: null
+      }, clearInterval(this.state.interval))
       this.setEnemyTimer();
       this.makeEnemies();
     }
@@ -188,28 +196,55 @@ if (start) {
     })
   }
 
+  pickTowerType = (towerType) => {
+    this.setState({
+      towerTypePicked: towerType
+    })
+  }
+
   makeTower = (tileCoords, whichTower) => {
-    if (this.state.cash >= 40) {
+    const towerInfo = this.state.towerTypePicked.towerInfo
+
+    if (this.state.cash >= towerInfo.cost) {
+            let newTower = {};
+      switch(towerInfo.type) {
+
+        case 'Tower':
+
+        newTower[whichTower] = {
+          towerElement: <Tower
+            canDrag={false}
+            towers={this.state.towers}
+            movementTimer={this.state.movementTimer} />,
+            towerCoords: tileCoords,
+            towerTarget: [],
+            range: 1
+          }
+          break;
+
+          case 'SniperTower':
+
+          newTower[whichTower] = {
+            towerElement: <SniperTower
+              canDrag={false}
+              towers={this.state.towers}
+              movementTimer={this.state.movementTimer} />,
+              towerCoords: tileCoords,
+              towerTarget: [],
+              range: 20
+            }
+            break;
+
+      }
 
 
-      let newTower = {};
-
-      newTower[whichTower] = {
-        towerElement: <Tower
-
-          canDrag={false}
-          towers={this.state.towers}
-          movementTimer={this.state.movementTimer} />,
-          towerCoords: tileCoords,
-          towerTarget: [],
-
-        }
 
         let newTowerState = Object.assign(this.state.towers, newTower);
+        console.log(newTower);
 
         this.setState({
           towers: newTowerState,
-          cash: this.state.cash - 40
+          cash: this.state.cash - towerInfo.cost
         })
       }
     }
@@ -226,6 +261,7 @@ if (start) {
         let towerCoords = tower.split('-')
         let xCoord = parseInt(towerCoords[1])
         let yCoord = parseInt(towerCoords[0])
+        let towerRange = this.state.towers[tower].range
 
         Object.keys(this.state.enemies).map(enemy => {
 
@@ -233,9 +269,14 @@ if (start) {
           let currentPosition = this.state.enemyPositions[enemyTimer]
 
 
+          // if ( currentPosition &&
+          //   ((currentPosition.top / TILE_H) === yCoord + 1 || (currentPosition.top / TILE_H) === yCoord - 1 || (currentPosition.top / TILE_H) === yCoord) && (((currentPosition.right / TILE_W) === xCoord + 1 || (currentPosition.right / TILE_W) === xCoord - 1 || (currentPosition.right / TILE_W) === xCoord))
+          // )  {
+
           if ( currentPosition &&
-            ((currentPosition.top / TILE_H) === yCoord + 1 || (currentPosition.top / TILE_H) === yCoord - 1 || (currentPosition.top / TILE_H) === yCoord) && (((currentPosition.right / TILE_W) === xCoord + 1 || (currentPosition.right / TILE_W) === xCoord - 1 || (currentPosition.right / TILE_W) === xCoord))
+            ((currentPosition.top / TILE_H) <= yCoord + towerRange && (currentPosition.top / TILE_H) >= yCoord - towerRange)  && ((currentPosition.right / TILE_W) <= xCoord + towerRange && (currentPosition.right / TILE_W) >= xCoord - towerRange)
           )  {
+            console.log(this.state.towers[tower].range);
 
 
             if (this.state.towers[tower].towerTarget.length < 1) {
@@ -314,6 +355,7 @@ if (start) {
 
 
     render() {
+      console.log(this.state);
 
       return (
 
@@ -346,6 +388,7 @@ if (start) {
           }
 
           <ControlPanel
+            pickTowerType={this.pickTowerType}
             cash={this.state.cash}
             startGame={this.startGame} gameState={this.state.gameState}
             changeMap={this.changeMap}

@@ -17,8 +17,8 @@ const TowerContainer = styled.div`
 const towerSource = {
   beginDrag(props) {
     props.pickTowerType({towerInfo: {
-      type: 'Tower',
-      cost: 40,
+      type: 'SniperTower',
+      cost: 80,
     }})
     return {};
   },
@@ -35,7 +35,7 @@ function collect(connect, monitor) {
   }
 }
 
-class Tower extends Component {
+class SniperTower extends Component {
   constructor(props){
     super(props)
 
@@ -59,7 +59,7 @@ class Tower extends Component {
               }}>
 
               <TowerContainer>
-                T
+                S
               </TowerContainer>
 
             </div>
@@ -70,4 +70,4 @@ class Tower extends Component {
   }
 
 
-export default DragSource(TowerDrag.TOWER, towerSource, collect)(Tower);
+export default DragSource(TowerDrag.TOWER, towerSource, collect)(SniperTower);

@@ -24,6 +24,7 @@ right: -30px;;
 
 const tileTarget = {
 
+
   drop(props, monitor) {
     props.makeTower(props.coords, props.whichTower)
   }
@@ -40,18 +41,6 @@ function collect(connect, monitor) {
 
 
 class Tile extends Component {
-  // constructor(props){
-  //   super(props)
-  //
-  //
-  // }
-
-
-  // shouldComponentUpdate(nextProps, nextState){
-  //
-  // }
-
-
 
   render(){
     const {whichTower, towers, coords, connectDropTarget, isOver, tileType} = this.props
