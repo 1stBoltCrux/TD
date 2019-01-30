@@ -20,6 +20,7 @@ const towerSource = {
       type: 'SniperTower',
       cost: 80,
       range: 7,
+      damage: 20
     }})
     return {};
   },

@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import styled from 'styled-components'
+import {keyframes} from 'styled-components'
+import explosion from '../images/explosion.gif'
 
 const EnemyContainer = styled.div`
   z-index: 2;
@@ -15,6 +17,31 @@ const EnemyContainer = styled.div`
   transform: translate(${props => props.newPosition.right}px, ${props => props.newPosition.top}px);
   transition: transform .2s linear;
 `
+
+const fadeOut = keyframes`
+from {
+opacity: 1
+}
+to {
+ opacity: 0
+}
+`;
+
+const Explosion = styled.div`
+display: flex;
+justify-content: center;
+align-items: center;
+z-index: 2;
+position: absolute;
+  background-image: url(${explosion});
+  background-position: center;
+  background-size: contain;
+  background-repeat: no-repeat;
+  width: 30px;
+  height: 30px;
+  transform: translate(${props => props.location.right}px, ${props => props.location.top}px);
+  animation: ${fadeOut} .4s linear;
+`
     const enemyColors = ['red', 'green', 'blue', 'orange', 'teal'];
 
 class Enemy extends Component {
@@ -26,25 +53,13 @@ class Enemy extends Component {
     }
   }
 
-
-
-
-
   render(props) {
-
-    const {enemyPositions, movementTimer, enemyID, enemyHP, enemyStatus, enemyMovementTimer, enemies } = this.props;
-
+    const {deadEnemies, enemyPositions, movementTimer, enemyID, enemyHP, enemyStatus, enemyMovementTimer, enemies } = this.props;
 
     let currentMovementTimer = movementTimer - enemyMovementTimer
-
-
-
-
     let newPosition = enemyPositions[currentMovementTimer];
+
     if (newPosition && enemies[enemyID].enemyStatus) {
-
-
-
 
       return(
         <EnemyContainer
@@ -53,10 +68,9 @@ class Enemy extends Component {
           {enemies[enemyID].enemyHP}
         </EnemyContainer>
       )
+
     } else {
-      return(
-        null
-      )
+      return null;
     }
 
 

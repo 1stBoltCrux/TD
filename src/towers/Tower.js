@@ -20,6 +20,7 @@ const towerSource = {
       type: 'Tower',
       cost: 40,
       range: 1,
+      damage: 40,
     }})
     return {};
   },

@@ -5,8 +5,11 @@ import SniperTower from './towers/SniperTower'
 import ControlPanel from './ControlPanel'
 import styled from 'styled-components'
 import Enemy from './enemies/Enemy';
+// import DeadEnemy from './enemies/DeadEnemy';
 import uuid from 'uuid'
 import {TILE_H, TILE_W} from './config/movement/MovementVariables';
+import explosion from './images/explosion.gif'
+import {keyframes} from 'styled-components'
 
 const MainContainer = styled.div`
 display: flex;
@@ -21,20 +24,45 @@ width: 600px;
 position: relative;
 `
 
+const fadeOut = keyframes`
+from {
+opacity: 1
+}
+to {
+ opacity: 0
+}
+`;
+
+const Explosion = styled.div`
+display: flex;
+justify-content: center;
+align-items: center;
+z-index: 3;
+position: absolute;
+  background-image: url(${explosion});
+  background-position: center;
+  background-size: contain;
+  background-repeat: no-repeat;
+  width: 30px;
+  height: 30px;
+  left: ${props => props.deadEnemiesLocation.right}px;
+  top:  ${props => props.deadEnemiesLocation.top}px;
+  animation: ${fadeOut} .4s linear;
+  `
+
 class App extends Component {
   constructor(props){
     super(props)
 
     this.state = {
-      deadEnemies: [],
-      level: 10,
+      deadEnemies: {},
+      level: 1,
       gameState: false,
       movementTimer: 0,
       currentBoard: null,
       towers: {},
       enemyPositions: [],
       movementTimer: 0,
-      enemyHP: 100,
       enemyStatus: true,
       cash: 120,
       enemies: {},
@@ -92,7 +120,6 @@ class App extends Component {
       possiblePositions.splice(j,1)
 
     }
-    console.log(randomPosition);
     this.setState({
       randomPosition: randomPosition
     })
@@ -108,7 +135,7 @@ class App extends Component {
     // lose game and restart //
     if (this.state.movementTimer >= this.state.enemyPositions.length + this.state.randomPosition.length && Object.keys(this.state.enemies).length > 0) {
       this.setState({
-        deadEnemies: [],
+        deadEnemies: {},
         level: 1,
         gameState: false,
         movementTimer: 0,
@@ -116,7 +143,6 @@ class App extends Component {
         towers: {},
         enemyPositions: [],
         movementTimer: 0,
-        enemyHP: 100,
         enemyStatus: true,
         cash: 120,
         enemies: {},
@@ -125,9 +151,9 @@ class App extends Component {
       }, clearInterval(this.state.interval))
       this.setEnemyTimer();
       this.makeEnemies();
-    } else if (this.state.deadEnemies.length === this.state.level * 2) {
+    } else if (Object.keys(this.state.deadEnemies).length === this.state.level * 2) {
       this.setState({
-        deadEnemies: [],
+        deadEnemies: {},
         level: this.state.level + 1,
         gameState: false,
         movementTimer: 0,
@@ -135,7 +161,6 @@ class App extends Component {
         towers: {},
         enemyPositions: [],
         movementTimer: 0,
-        enemyHP: 100,
         enemyStatus: true,
         cash: 120,
         enemies: {},
@@ -222,7 +247,8 @@ if (start) {
             movementTimer={this.state.movementTimer} />,
             towerCoords: tileCoords,
             towerTarget: [],
-            range: 1
+            range: 1,
+            damage: 40,
           }
           break;
 
@@ -235,7 +261,8 @@ if (start) {
               movementTimer={this.state.movementTimer} />,
               towerCoords: tileCoords,
               towerTarget: [],
-              range: 7
+              range: 7,
+              damage: 20,
             }
             break;
 
@@ -244,7 +271,7 @@ if (start) {
 
 
         let newTowerState = Object.assign(this.state.towers, newTower);
-        console.log(newTower);
+
 
         this.setState({
           towers: newTowerState,
@@ -277,7 +304,6 @@ if (start) {
           if ( currentPosition &&
             ((currentPosition.top / TILE_H) <= yCoord + ((towerRange + 1) / 2 ) && (currentPosition.top / TILE_H) >= yCoord - ((towerRange + 1) / 2 ))  && ((currentPosition.right / TILE_W) <= xCoord + ((towerRange + 1) / 2 ) && (currentPosition.right / TILE_W) >= xCoord - ((towerRange + 1) / 2 ))
           )  {
-            console.log(this.state.towers[tower].range);
 
             if (this.state.towers[tower].towerTarget.length < 1) {
               console.log('target acquired');
@@ -300,7 +326,7 @@ if (start) {
               let thisEnemy = this.state.enemies[this.state.towers[tower].towerTarget[0]]
               let newEnemyObject = {}
               let hurtEnemy = Object.assign(thisEnemy, {
-                enemyHP: thisEnemy.enemyHP - 60,
+                enemyHP: thisEnemy.enemyHP - this.state.towers[tower].damage,
                 enemyStatus: thisEnemy.enemyHP > 0 ? true : false,
               })
               newEnemyObject[this.state.towers[tower].towerTarget[0]] = hurtEnemy
@@ -311,12 +337,19 @@ if (start) {
               })
 
               if (!this.state.enemies[enemy].enemyStatus) {
-                let deadEnemy = enemy;
+                let deadEnemies = {}
+                deadEnemies[enemy] = {
+                  location: this.state.enemyPositions[enemyTimer]
+                }
+
+                let newDeadEnemies = Object.assign(this.state.deadEnemies, deadEnemies)
                 this.setState({
-                  deadEnemies: [...this.state.deadEnemies, deadEnemy]
+                  deadEnemies: newDeadEnemies,
+                  cash: this.state.cash + 10,
                 })
                 delete this.state.enemies[enemy]
                 console.log('enemy eliminated');
+                console.log(this.state);
 
                 //this is repetitive, should be turned into a single function as it is repeated in the target changed conditional
                 let thisTower = this.state.towers[tower]
@@ -335,7 +368,7 @@ if (start) {
 
             //keeps empty target array from causing error on hurtEnemy definition -----end //
 
-          } else if (this.state.towers[tower].towerTarget.includes(enemy) ||  this.state.deadEnemies.includes(this.state.towers[tower].towerTarget[0])){
+          } else if (this.state.towers[tower].towerTarget.includes(enemy) ||  Object.keys(this.state.deadEnemies).includes(this.state.towers[tower].towerTarget[0])){
             console.log('target changed');
             let thisTower = this.state.towers[tower]
             let newTowerObject = {}
@@ -353,19 +386,37 @@ if (start) {
       })
     }
 
+    explodeEnemy = () => {
+      if (Object.keys(this.state.deadEnemies).length > 0) {
+        return (
+          Object.keys(this.state.deadEnemies).map(deadEnemy => {
+            return ( <Explosion
+              deadEnemiesLocation={this.state.deadEnemies[deadEnemy].location}
+                     ></Explosion>
+                   )
+          })
+        )
+
+
+    } else {
+      return null;
+    }
+    }
+
 
     render() {
-      console.log(this.state);
 
       return (
 
         <MainContainer>
           {this.state.currentBoard &&
             <EnemyContainer>
+
               {Object.keys(this.state.enemies).map(enemy => {
 
                 return (
                   <Enemy
+                    deadEnemies={this.state.deadEnemies}
                     enemyMovementTimer={this.state.enemies[enemy].enemyMovementTimer}
                     enemies={this.state.enemies}
                     key={enemy}
@@ -386,6 +437,8 @@ if (start) {
                 gameState={this.state.gameState}
                 movementTimer={this.state.movementTimer}
                 currentBoard={this.state.currentBoard}/>
+
+              {this.explodeEnemy()}
             </EnemyContainer>
           }
 
