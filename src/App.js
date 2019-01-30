@@ -43,11 +43,12 @@ position: absolute;
   background-position: center;
   background-size: contain;
   background-repeat: no-repeat;
-  width: 30px;
-  height: 30px;
-  left: ${props => props.deadEnemiesLocation.right}px;
-  top:  ${props => props.deadEnemiesLocation.top}px;
-  animation: ${fadeOut} .4s linear;
+  width: 60px;
+  height: 60px;
+  left: ${props => props.deadEnemiesLocation.right - 15}px;
+  top:  ${props => props.deadEnemiesLocation.top - 15}px;
+  animation: ${fadeOut} 1s linear;
+  animation-fill-mode: forwards;
   `
 
 class App extends Component {
@@ -393,14 +394,12 @@ if (start) {
             return ( <Explosion
               deadEnemiesLocation={this.state.deadEnemies[deadEnemy].location}
                      ></Explosion>
-                   )
+            )
           })
         )
-
-
-    } else {
-      return null;
-    }
+      } else {
+        return null;
+      }
     }
 
 
