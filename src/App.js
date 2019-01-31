@@ -5,11 +5,12 @@ import SniperTower from './towers/SniperTower'
 import ControlPanel from './ControlPanel'
 import styled from 'styled-components'
 import Enemy from './enemies/Enemy';
-// import DeadEnemy from './enemies/DeadEnemy';
 import uuid from 'uuid'
 import {TILE_H, TILE_W} from './config/movement/MovementVariables';
 import explosion from './images/explosion.gif'
 import {keyframes} from 'styled-components'
+import ExplosionSound from './audio/ExplosionSound'
+
 
 const MainContainer = styled.div`
 display: flex;
@@ -57,7 +58,7 @@ class App extends Component {
 
     this.state = {
       deadEnemies: {},
-      level: 1,
+      level: 10,
       gameState: false,
       movementTimer: 0,
       currentBoard: null,
@@ -65,10 +66,11 @@ class App extends Component {
       enemyPositions: [],
       movementTimer: 0,
       enemyStatus: true,
-      cash: 120,
+      cash: 1800,
       enemies: {},
       randomPosition: [],
       towerTypePicked: null,
+      explosionSound: [],
     }
   }
 
@@ -130,7 +132,7 @@ class App extends Component {
     let timer = this.state.movementTimer;
     timer ++
     this.setState({
-      movementTimer: timer
+      movementTimer: timer,
     })
     this.checkForEnemy();
     // lose game and restart //
@@ -145,10 +147,11 @@ class App extends Component {
         enemyPositions: [],
         movementTimer: 0,
         enemyStatus: true,
-        cash: 120,
+        cash: 1800,
         enemies: {},
         randomPosition: [],
-        interval: null
+        interval: null,
+        explosionSound: [],
       }, clearInterval(this.state.interval))
       this.setEnemyTimer();
       this.makeEnemies();
@@ -163,10 +166,11 @@ class App extends Component {
         enemyPositions: [],
         movementTimer: 0,
         enemyStatus: true,
-        cash: 120,
+        cash: 1800,
         enemies: {},
         randomPosition: [],
-        interval: null
+        interval: null,
+        explosionSound: [],
       }, clearInterval(this.state.interval))
       this.setEnemyTimer();
       this.makeEnemies();
@@ -195,8 +199,6 @@ class App extends Component {
     })
 
   }
-
-
   startGame = (start) => {
 
 
@@ -344,13 +346,16 @@ if (start) {
                 }
 
                 let newDeadEnemies = Object.assign(this.state.deadEnemies, deadEnemies)
+                // let explosionSound = [];
+                // explosionSound.push(<ExplosionSound/>)
                 this.setState({
                   deadEnemies: newDeadEnemies,
                   cash: this.state.cash + 10,
+                  // explosionSound: [...this.state.explosionSound, explosionSound ]
                 })
+                this.explosionSound();
                 delete this.state.enemies[enemy]
                 console.log('enemy eliminated');
-                console.log(this.state);
 
                 //this is repetitive, should be turned into a single function as it is repeated in the target changed conditional
                 let thisTower = this.state.towers[tower]
@@ -388,28 +393,51 @@ if (start) {
     }
 
     explodeEnemy = () => {
+
       if (Object.keys(this.state.deadEnemies).length > 0) {
+
         return (
+
           Object.keys(this.state.deadEnemies).map(deadEnemy => {
             return ( <Explosion
               deadEnemiesLocation={this.state.deadEnemies[deadEnemy].location}
-                     ></Explosion>
+                     >
+
+            </Explosion>
             )
           })
         )
+
       } else {
         return null;
       }
     }
 
+    explosionSound = () => {
+        let newExplosionSoundArray = []
+
+          newExplosionSoundArray.push(<ExplosionSound/>)
+
+
+        this.setState({
+          explosionSound: [...this.state.explosionSound, newExplosionSoundArray]
+        })
+
+    }
 
     render() {
+
+
 
       return (
 
         <MainContainer>
           {this.state.currentBoard &&
             <EnemyContainer>
+              {this.state.explosionSound.map(sound => {
+                return sound
+              })}
+
 
               {Object.keys(this.state.enemies).map(enemy => {
 
@@ -438,6 +466,7 @@ if (start) {
                 currentBoard={this.state.currentBoard}/>
 
               {this.explodeEnemy()}
+
             </EnemyContainer>
           }
 
@@ -448,8 +477,6 @@ if (start) {
             changeMap={this.changeMap}
             currentBoard={this.state.currentBoard}/>
         </MainContainer>
-
-
 
           );
         }
