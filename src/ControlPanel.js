@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import {BoardOne, BoardTwo, BoardThree} from './config/board/Boards';
-import styled from 'styled-components'
+import Tower from './towers/Tower';
+import SniperTower from './towers/SniperTower';
+import styled from 'styled-components';
 
 const ControlsContainer = styled.div`
   text-align: center;
@@ -28,20 +30,40 @@ class ControlPanel extends Component {
   // }
 
   render(props) {
-    const {gameState, changeMap, currentBoard} = this.props
+
+    const {towers, gameState, changeMap, currentBoard, pickTowerType} = this.props
     return(
       <ControlsContainer>
+
+
+
         {currentBoard &&
-          <ControlButton onClick={this.props.startGame}>
+          <div>
+
             {!gameState && (
-              <p>Start!</p>
+              <ControlButton onClick={()=> this.props.startGame(true)}>
+                <p>Start!</p>
+              </ControlButton>
             )}
             {gameState && (
-              <p>Stop!</p>
+
+              <ControlButton onClick={() => this.props.startGame(false)}>
+                <p>Stop!</p>
+              </ControlButton>
+
             )}
 
-          </ControlButton>
+            <Tower
+              pickTowerType={pickTowerType}
+              canDrag={true}
+            />
+            <SniperTower
+              pickTowerType={pickTowerType}
+              canDrag={true}/>
+            ${this.props.cash}
+          </div>
         }
+
 
         {!currentBoard && (
 

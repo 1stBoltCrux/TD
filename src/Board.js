@@ -9,6 +9,7 @@ import {TILE_H, TILE_W} from './config/movement/MovementVariables';
 
 const BoardContainer = styled.div`
   position: relative;
+  overflow: hidden;
 `
 
 const Block = styled.div`
@@ -32,93 +33,57 @@ class Board extends Component {
     super(props)
 
       this.state = {
-        enemyPositions: [],
-        movementTimer: 0,
+
       }
   }
 
-
-  setEnemyPositions = () => {
-    let top;
-    let right;
-    let enemyPositions = [];
-    this.props.currentBoard.map((row, i) => {
-
-      row.map((tile, j) => {
-        if(tile !== 0){
-          top = i * TILE_H
-          right = j * TILE_W
-          enemyPositions.push({top:top, right:right, tile: tile})
-        }
-      })
-    })
-    enemyPositions.sort((position1, position2) => {
-      if( position1.tile < position2.tile ) {
-        return -1
-      }
-    })
-    this.setState({
-      enemyPositions: enemyPositions
-    })
-
+  shouldComponentUpdate(nextProps){
+    if (this.props.enemyPositions.length !== nextProps.enemyPositions.length) {
+      return true
+    } else {
+      return false
+    }
   }
 
-componentDidMount(){
-console.log('mounting board');
-    this.setEnemyPositions();
 
 
 
-  }
+  currentMap = () => this.props.currentBoard.map((row, i) => {
 
+   const whichRow = i;
+   return (
+       <Row key={uuid()}>
+         {row.map((tile, j) => {
+           const whichTile = j;
+           const coords = [whichRow, whichTile]
+           const whichTower = `${whichRow}-${whichTile}`
+           return(
+             <Block key={uuid()} tileType={tile}>
+               <Tile
+                 passOverlayToTile={this.props.passOverlayToTile}
+                 makeTower={this.props.makeTower}
+                 towers={this.props.towers}
+                 key={uuid()}
+                 whichTower={whichTower}
+                 coords={coords}
+                 tileType={tile}
+               />
+             </Block>
+           )
+         })}
+       </Row>
+   )
+ })
 
 
 
   render() {
-
-    console.log(Object.keys(this.props.towers).length)
-
-    const currentMap = this.props.currentBoard.map((row, i) => {
-
-      const whichRow = i;
-      return (
-          <Row key={uuid()}>
-            {row.map((tile, j) => {
-              const whichTile = j;
-              const coords = [whichRow, whichTile]
-              const whichTower = `y${whichRow}x${whichTile}`
-              return(
-                <Block key={uuid()} tileType={tile}>
-                  <Tile
-
-                    makeTower={this.props.makeTower}
-                    towers={this.props.towers}
-                    key={uuid()}
-                    whichTower={whichTower}
-                    coords={coords}
-                    tileType={tile}
-                  />
-                </Block>
-              )
-            })}
-          </Row>
-      )
-    })
-
-
     return (
       <div>
-        <Tower
 
-          movementTimer={this.props.movementTimer}
-          enemyPositions={this.state.enemyPositions}
-
-        />
         <BoardContainer>
 
-          <Enemy movementTimer={this.props.movementTimer} enemyPositions={this.state.enemyPositions}/>
-
-          {currentMap}
+          {this.currentMap()}
         </BoardContainer>
       </div>
 
