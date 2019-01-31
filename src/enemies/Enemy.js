@@ -27,21 +27,6 @@ to {
 }
 `;
 
-const Explosion = styled.div`
-display: flex;
-justify-content: center;
-align-items: center;
-z-index: 2;
-position: absolute;
-  background-image: url(${explosion});
-  background-position: center;
-  background-size: contain;
-  background-repeat: no-repeat;
-  width: 30px;
-  height: 30px;
-  transform: translate(${props => props.location.right}px, ${props => props.location.top}px);
-  animation: ${fadeOut} .4s linear;
-`
     const enemyColors = ['red', 'green', 'blue', 'orange', 'teal'];
 
 class Enemy extends Component {
@@ -54,10 +39,11 @@ class Enemy extends Component {
   }
 
   render(props) {
-    const {deadEnemies, enemyPositions, movementTimer, enemyID, enemyHP, enemyStatus, enemyMovementTimer, enemies } = this.props;
 
-    let currentMovementTimer = movementTimer - enemyMovementTimer
-    let newPosition = enemyPositions[currentMovementTimer];
+    const {deadEnemies, newPosition, enemyID, enemyHP, enemyStatus, enemies } = this.props;
+
+
+
 
     if (newPosition && enemies[enemyID].enemyStatus) {
 

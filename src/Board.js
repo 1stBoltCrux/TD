@@ -78,6 +78,7 @@ class Board extends Component {
 
 
   render() {
+    console.log('board re-render');
     return (
       <div>
 

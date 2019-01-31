@@ -29,11 +29,26 @@ class ControlPanel extends Component {
   //   super(props)
   // }
 
-  render(props) {
+  shouldComponentUpdate(nextProps){
+    if (!this.props.currentBoard || (this.props.gameState !== nextProps.gameState) || (this.props.cash !== nextProps.cash)) {
+      return true
+    } else {
+      return false
+    }
+  }
 
-    const {towers, gameState, changeMap, currentBoard, pickTowerType} = this.props
+  render(props) {
+    console.log('control panel rendering');
+
+    const {towers, gameState, changeMap, currentBoard, pickTowerType, level} = this.props
     return(
       <ControlsContainer>
+        {currentBoard && (
+          <div>
+            <h2>Level {level}</h2>
+          </div>
+        )}
+
 
 
 

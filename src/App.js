@@ -11,7 +11,6 @@ import explosion from './images/explosion.gif'
 import {keyframes} from 'styled-components'
 import ExplosionSound from './audio/ExplosionSound'
 
-
 const MainContainer = styled.div`
 display: flex;
 align-items: center;
@@ -58,7 +57,7 @@ class App extends Component {
 
     this.state = {
       deadEnemies: {},
-      level: 10,
+      level: 1,
       gameState: false,
       movementTimer: 0,
       currentBoard: null,
@@ -71,14 +70,13 @@ class App extends Component {
       randomPosition: [],
       towerTypePicked: null,
       explosionSound: [],
+      interval: null,
     }
   }
 
   passOverlayToTile = () => {
     return this.state.towerTypePicked.towerInfo.range
   }
-
-
 
   setEnemyPositions = () => {
     let top;
@@ -103,10 +101,10 @@ class App extends Component {
     this.setState({
       enemyPositions: enemyPositions
     })
-
   }
 
   setEnemyTimer = () => {
+    console.log('firing set-enemy-timer');
     let possiblePositions = [];
     let enemies = Array((this.state.level * 2)).fill(0)
   enemies.forEach((enemy, index) => {
@@ -137,6 +135,7 @@ class App extends Component {
     this.checkForEnemy();
     // lose game and restart //
     if (this.state.movementTimer >= this.state.enemyPositions.length + this.state.randomPosition.length && Object.keys(this.state.enemies).length > 0) {
+
       this.setState({
         deadEnemies: {},
         level: 1,
@@ -150,30 +149,31 @@ class App extends Component {
         cash: 1800,
         enemies: {},
         randomPosition: [],
-        interval: null,
         explosionSound: [],
+        interval: null,
       }, clearInterval(this.state.interval))
-      this.setEnemyTimer();
-      this.makeEnemies();
     } else if (Object.keys(this.state.deadEnemies).length === this.state.level * 2) {
-      this.setState({
-        deadEnemies: {},
-        level: this.state.level + 1,
-        gameState: false,
-        movementTimer: 0,
-        currentBoard: null,
-        towers: {},
-        enemyPositions: [],
-        movementTimer: 0,
-        enemyStatus: true,
-        cash: 1800,
-        enemies: {},
-        randomPosition: [],
-        interval: null,
-        explosionSound: [],
-      }, clearInterval(this.state.interval))
-      this.setEnemyTimer();
-      this.makeEnemies();
+      setTimeout(()=> {
+        this.setState({
+          deadEnemies: {},
+          level: this.state.level + 1,
+          gameState: false,
+          movementTimer: 0,
+          currentBoard: this.state.currentBoard,
+          towers: {},
+          enemyPositions: [],
+          movementTimer: 0,
+          enemyStatus: true,
+          cash: 1800,
+          enemies: {},
+          randomPosition: [],
+          explosionSound: [],
+        }, clearInterval(this.state.interval))
+        this.setEnemyPositions()
+        this.setEnemyTimer();
+        this.makeEnemies();
+
+      })
     }
   }
 
@@ -183,13 +183,14 @@ class App extends Component {
   }
 
   makeEnemies = () => {
-
+    console.log('firing make-enemies');
     let enemiesObject = {}
 
     this.state.randomPosition.forEach(enemyTimer => {
+      console.log('make-enemies looping through random positions');
       let enemyID = uuid();
       enemiesObject[enemyID] = {
-        enemyHP: 100,
+        enemyHP: 250,
         enemyStatus: true,
         enemyMovementTimer: enemyTimer,
       }
@@ -197,7 +198,7 @@ class App extends Component {
     this.setState({
       enemies: enemiesObject,
     })
-
+    console.log(this.state.enemies);
   }
   startGame = (start) => {
 
@@ -268,13 +269,9 @@ if (start) {
               damage: 20,
             }
             break;
-
       }
 
-
-
         let newTowerState = Object.assign(this.state.towers, newTower);
-
 
         this.setState({
           towers: newTowerState,
@@ -289,7 +286,6 @@ if (start) {
           enemyStatus: false
         })
       }
-
 
       Object.keys(this.state.towers).map(tower => {
         let towerCoords = tower.split('-')
@@ -346,18 +342,16 @@ if (start) {
                 }
 
                 let newDeadEnemies = Object.assign(this.state.deadEnemies, deadEnemies)
-                // let explosionSound = [];
-                // explosionSound.push(<ExplosionSound/>)
                 this.setState({
                   deadEnemies: newDeadEnemies,
                   cash: this.state.cash + 10,
-                  // explosionSound: [...this.state.explosionSound, explosionSound ]
                 })
                 this.explosionSound();
                 delete this.state.enemies[enemy]
                 console.log('enemy eliminated');
 
                 //this is repetitive, should be turned into a single function as it is repeated in the target changed conditional
+
                 let thisTower = this.state.towers[tower]
                 let newTowerObject = {}
                 let towerWithTarget = Object.assign(thisTower, {towerTarget: []})
@@ -434,24 +428,26 @@ if (start) {
         <MainContainer>
           {this.state.currentBoard &&
             <EnemyContainer>
-              {this.state.explosionSound.map(sound => {
+
+              {/* convaluted sound setup to get sound library to fire multiple sounds at once */}
+
+              {/* {this.state.explosionSound.map(sound => {
                 return sound
-              })}
+              })} */}
 
 
               {Object.keys(this.state.enemies).map(enemy => {
-
+                let newEnemyPosition = this.state.enemyPositions[this.state.movementTimer - this.state.enemies[enemy].enemyMovementTimer]
                 return (
                   <Enemy
                     deadEnemies={this.state.deadEnemies}
-                    enemyMovementTimer={this.state.enemies[enemy].enemyMovementTimer}
+                    newPosition={newEnemyPosition}
                     enemies={this.state.enemies}
                     key={enemy}
                     enemyID={enemy}
                     enemyStatus={this.state.enemyStatus}
                     enemyHP={this.state.enemyHP}
-                    enemyPositions={this.state.enemyPositions}
-                    movementTimer={this.state.movementTimer}
+
                   />
                 )
               })}
@@ -471,6 +467,7 @@ if (start) {
           }
 
           <ControlPanel
+            level={this.state.level}
             pickTowerType={this.pickTowerType}
             cash={this.state.cash}
             startGame={this.startGame} gameState={this.state.gameState}
