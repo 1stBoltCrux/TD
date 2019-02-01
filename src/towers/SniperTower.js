@@ -2,12 +2,16 @@ import React, {Component} from 'react';
 import styled from 'styled-components';
 import {DragSource, DragLayer} from 'react-dnd'
 import {TowerDrag} from './../draggables/Draggable';
+import towerOne from './../images/tower-1.png'
 
 const TowerContainer = styled.div`
   border-radius: 20px;
-  width: 30px;
-  height: 30px;
-  background-color: black;
+  width: 50px;
+  height: 50px;
+  background-image: url(${towerOne});
+    background-repeat: no-repeat;
+    background-size: contain;
+      background-position: center;
   display: flex;
   justify-content: center;
   align-items: center;

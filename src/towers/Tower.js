@@ -10,6 +10,8 @@ const TowerContainer = styled.div`
   height: 50px;
   background-image: url(${towerOne});
   background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -60,7 +62,7 @@ class Tower extends Component {
                   fontSize: 25,
                   fontWeight: 'bold',
                   cursor: 'pointer',
-                  
+
               }}>
 
               <TowerContainer>

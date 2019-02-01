@@ -8,8 +8,11 @@ import Enemy from './enemies/Enemy';
 import uuid from 'uuid'
 import {TILE_H, TILE_W} from './config/movement/MovementVariables';
 import explosion from './images/explosion.gif'
+import smoke from './images/smoke.gif'
 import {keyframes} from 'styled-components'
 import ExplosionSound from './audio/ExplosionSound'
+import Shot from './audio/Shot'
+
 
 const MainContainer = styled.div`
 display: flex;
@@ -51,6 +54,14 @@ position: absolute;
   animation-fill-mode: forwards;
   `
 
+  const SmokeContainer = styled.div`
+    position: absolute;
+  width: 30px;
+  height: 30px;
+  top: ${props => props.top  * 30}px;
+    left: ${props => (props.right  * 30) - 5}px;
+  `
+
 class App extends Component {
   constructor(props){
     super(props)
@@ -70,13 +81,33 @@ class App extends Component {
       randomPosition: [],
       towerTypePicked: null,
       explosionSound: [],
+      shotSound: [],
       interval: null,
+
     }
   }
 
   passOverlayToTile = () => {
     return this.state.towerTypePicked.towerInfo.range
   }
+
+  smokeFiring = (towers) => {
+
+    let smokeEffects = []
+    Object.keys(towers).forEach((tower) => {
+      if (towers[tower].towerTarget.length > 0) {
+        smokeEffects.push(
+          <SmokeContainer
+            top={towers[tower].towerCoords[0]}
+            right={towers[tower].towerCoords[1]}
+          >
+            <img src={smoke} width="100%"/>
+          </SmokeContainer>
+          )
+        }
+      })
+      return smokeEffects;
+    }
 
   setEnemyPositions = () => {
     let top;
@@ -151,6 +182,7 @@ class App extends Component {
         randomPosition: [],
         explosionSound: [],
         interval: null,
+        shotSound: [],
       }, clearInterval(this.state.interval))
       this.setEnemyTimer();
       this.makeEnemies();
@@ -170,6 +202,7 @@ class App extends Component {
           enemies: {},
           randomPosition: [],
           explosionSound: [],
+          shotSound: [],
         }, clearInterval(this.state.interval))
         this.setEnemyPositions()
         this.setEnemyTimer();
@@ -319,6 +352,7 @@ if (start) {
 
             if (this.state.enemies[this.state.towers[tower].towerTarget[0]] && (this.state.towers[tower].towerTarget[0] === enemy)) {
               console.log('target hit');
+              this.shotSound()
               let thisEnemy = this.state.enemies[this.state.towers[tower].towerTarget[0]]
               let newEnemyObject = {}
               let hurtEnemy = Object.assign(thisEnemy, {
@@ -329,8 +363,9 @@ if (start) {
               let newEnemyState = Object.assign(this.state.enemies, newEnemyObject)
 
               this.setState({
-                enemies: newEnemyState
+                enemies: newEnemyState,
               })
+              // this.shotSound()
 
               if (!this.state.enemies[enemy].enemyStatus) {
                 let deadEnemies = {}
@@ -416,7 +451,20 @@ if (start) {
 
     }
 
+    shotSound = () => {
+        let newShotSoundArray = []
+
+          newShotSoundArray.push(<Shot/>)
+
+
+        this.setState({
+          shotSound: [...this.state.shotSound, newShotSoundArray]
+        })
+
+    }
+
     render() {
+      console.log(this.state);
 
 
 
@@ -429,6 +477,9 @@ if (start) {
               {/* convaluted sound setup to get sound library to fire multiple sounds at once */}
 
               {this.state.explosionSound.map(sound => {
+                return sound
+              })}
+              {this.state.shotSound.map(sound => {
                 return sound
               })}
 
@@ -459,6 +510,10 @@ if (start) {
                 currentBoard={this.state.currentBoard}/>
 
               {this.explodeEnemy()}
+              {this.smokeFiring(this.state.towers).map(smoke => {
+                return smoke
+              })}
+
 
             </EnemyContainer>
           }

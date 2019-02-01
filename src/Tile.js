@@ -3,6 +3,7 @@ import styled from 'styled-components'
 import { DropTarget } from 'react-dnd';
 import {TowerDrag} from './draggables/Draggable';
 import uuid from 'uuid';
+import smoke from './images/smoke.gif'
 
 const TileContainer = styled.div`
 width: 30px;
@@ -32,6 +33,12 @@ const test = {
   left: '-15px'
 }
 
+const testTwo = {
+  position: 'absolute',
+top: '-7px',
+left: '3px',
+}
+
 const tileTarget = {
 
 
@@ -52,11 +59,10 @@ function collect(connect, monitor) {
 
 class Tile extends Component {
 
-  test = () => {
-    console.log(this.props.passOverlayToTile());
-  }
+
 
   render(){
+    console.log('rendering');
     const {whichTower, towers, coords, connectDropTarget, isOver, tileType} = this.props
     if (tileType !== 0) {
       return (
@@ -95,10 +101,13 @@ class Tile extends Component {
             {
               Object.keys(towers).map(tower => {
 
+
+
                 if (tower === whichTower) {
                   return(
                     //styled div adjusts to center big tower image//
-                    <div style={test} key={uuid()}>
+                      <div style={test} key={uuid()}>
+
                       {towers[tower].towerElement}
                     </div>
                   )
