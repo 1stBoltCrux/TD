@@ -65,7 +65,7 @@ class App extends Component {
       enemyPositions: [],
       movementTimer: 0,
       enemyStatus: true,
-      cash: 1800,
+      cash: 400,
       enemies: {},
       randomPosition: [],
       towerTypePicked: null,
@@ -146,12 +146,14 @@ class App extends Component {
         enemyPositions: [],
         movementTimer: 0,
         enemyStatus: true,
-        cash: 1800,
+        cash: 400,
         enemies: {},
         randomPosition: [],
         explosionSound: [],
         interval: null,
       }, clearInterval(this.state.interval))
+      this.setEnemyTimer();
+      this.makeEnemies();
     } else if (Object.keys(this.state.deadEnemies).length === this.state.level * 2) {
       setTimeout(()=> {
         this.setState({
@@ -164,7 +166,7 @@ class App extends Component {
           enemyPositions: [],
           movementTimer: 0,
           enemyStatus: true,
-          cash: 1800,
+          cash: this.state.cash + 400,
           enemies: {},
           randomPosition: [],
           explosionSound: [],
@@ -190,7 +192,7 @@ class App extends Component {
       console.log('make-enemies looping through random positions');
       let enemyID = uuid();
       enemiesObject[enemyID] = {
-        enemyHP: 250,
+        enemyHP: this.state.level * 10 + 250,
         enemyStatus: true,
         enemyMovementTimer: enemyTimer,
       }
@@ -281,11 +283,6 @@ if (start) {
     }
 
     checkForEnemy = () => {
-      if (this.state.enemyHP <= 0 ) {
-        this.setState({
-          enemyStatus: false
-        })
-      }
 
       Object.keys(this.state.towers).map(tower => {
         let towerCoords = tower.split('-')
@@ -344,7 +341,7 @@ if (start) {
                 let newDeadEnemies = Object.assign(this.state.deadEnemies, deadEnemies)
                 this.setState({
                   deadEnemies: newDeadEnemies,
-                  cash: this.state.cash + 10,
+                  cash: this.state.cash + 15,
                 })
                 this.explosionSound();
                 delete this.state.enemies[enemy]
@@ -431,9 +428,9 @@ if (start) {
 
               {/* convaluted sound setup to get sound library to fire multiple sounds at once */}
 
-              {/* {this.state.explosionSound.map(sound => {
+              {this.state.explosionSound.map(sound => {
                 return sound
-              })} */}
+              })}
 
 
               {Object.keys(this.state.enemies).map(enemy => {

@@ -18,7 +18,7 @@ const towerSource = {
   beginDrag(props) {
     props.pickTowerType({towerInfo: {
       type: 'SniperTower',
-      cost: 80,
+      cost: 120,
       range: 7,
       damage: 20
     }})

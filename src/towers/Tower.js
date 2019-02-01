@@ -2,12 +2,14 @@ import React, {Component} from 'react';
 import styled from 'styled-components';
 import {DragSource, DragLayer} from 'react-dnd'
 import {TowerDrag} from './../draggables/Draggable';
+import towerOne from './../images/tower-1.png'
 
 const TowerContainer = styled.div`
   border-radius: 20px;
-  width: 30px;
-  height: 30px;
-  background-color: black;
+  width: 50px;
+  height: 50px;
+  background-image: url(${towerOne});
+  background-size: contain;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -18,7 +20,7 @@ const towerSource = {
   beginDrag(props) {
     props.pickTowerType({towerInfo: {
       type: 'Tower',
-      cost: 40,
+      cost: 80,
       range: 1,
       damage: 40,
     }})
@@ -57,11 +59,12 @@ class Tower extends Component {
                 opacity: isDragging ? 0.5 : 1,
                   fontSize: 25,
                   fontWeight: 'bold',
-                  cursor: 'pointer'
+                  cursor: 'pointer',
+                  
               }}>
 
               <TowerContainer>
-                T
+
               </TowerContainer>
 
             </div>

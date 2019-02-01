@@ -51,7 +51,7 @@ class ControlPanel extends Component {
 
 
 
-        
+
         {currentBoard &&
           <div>
 

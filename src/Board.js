@@ -5,6 +5,8 @@ import Tower from './towers/Tower'
 import styled from 'styled-components'
 import uuid from 'uuid'
 import {TILE_H, TILE_W} from './config/movement/MovementVariables';
+import pathTileOne from './images/path-tile-1.svg'
+import grassTileOne from './images/grass-tile-1.png'
 
 
 const BoardContainer = styled.div`
@@ -16,12 +18,14 @@ const Block = styled.div`
 justify-content: center;
 display: flex;
 align-items: center;
-box-sizing: border-box;
-border: 1px solid black;
+${'' /* box-sizing: border-box; */}
+ ${'' /* border: 1px solid black; */}
 font-size: .5em;
 width: 30px;
 height: 30px;
-background-color: ${props => props.tileType === 0 ? 'green' : 'blue'};
+ background-color: ${props => props.tileType === 0 ? 'green' : 'gray'};
+background-image: ${props => props.tileType >= 1 ? `url(${pathTileOne})` : `url(${grassTileOne})` };
+background-size: cover;
 `
 
 const Row = styled.div`

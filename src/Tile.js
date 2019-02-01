@@ -13,7 +13,7 @@ position: relative;
 //tower range must be an odd number, this is so it works in tandem with the Tile 'overlay' styled component width/height and position properties//
 
 const Overlay = styled.div`
-border: 2px solid white;
+
 width: ${props => (props.passOverlayToTile * 30) + 60}px;
 height: ${props => (props.passOverlayToTile * 30) + 60}px;
 pointer-events: none;
@@ -25,6 +25,12 @@ top: ${props => (props.passOverlayToTile * - 15) - 15}px;
 right: ${props => (props.passOverlayToTile * - 15) - 15}px;
 
 `
+
+const test = {
+  position: 'absolute',
+  top: '-15px',
+  left: '-15px'
+}
 
 const tileTarget = {
 
@@ -56,21 +62,23 @@ class Tile extends Component {
       return (
         <div>
           <TileContainer
-            onClick={()=> this.test()}
+            tileType={tileType}
           >
             {
               Object.keys(towers).map(tower => {
 
                 if (tower === whichTower) {
                   return(
-                    <div key={uuid()}>
+                    <div
+
+                      style={test}
+                      key={uuid()}>
                       {towers[tower].towerElement}
                     </div>
                   )
                 }
               })
             }
-            {coords}
           </TileContainer>
         </div>
       )
@@ -89,14 +97,15 @@ class Tile extends Component {
 
                 if (tower === whichTower) {
                   return(
-                    <div key={uuid()}>
+                    //styled div adjusts to center big tower image//
+                    <div style={test} key={uuid()}>
                       {towers[tower].towerElement}
                     </div>
                   )
                 }
               })
             }
-            {coords}
+
           </TileContainer>
         </div>
       );
