@@ -2,19 +2,23 @@ import React, { Component } from 'react';
 import styled from 'styled-components'
 import {keyframes} from 'styled-components'
 import explosion from '../images/explosion.gif'
+import goblin from '../images/goblin.png'
 
 const EnemyContainer = styled.div`
   z-index: 2;
   position: absolute;
-  background-color: ${props => props.randomColor};
-  width: 30px;
-  height: 30px;
+  background-image: url(${goblin});
+  background-position: center;
+  background-size: contain;
+  background-repeat: no-repeat;
+  width: 50px;
+  height: 50px;
   border-radius: 20px;
   color: white;
   display: flex;
   justify-content: center;
   align-items: center;
-  transform: translate(${props => props.newPosition.right}px, ${props => props.newPosition.top}px);
+  transform: translate(${props => props.newPosition.right -10}px, ${props => props.newPosition.top -20}px);
   transition: transform .2s linear;
 `
 
@@ -27,15 +31,10 @@ to {
 }
 `;
 
-    const enemyColors = ['red', 'green', 'blue', 'orange', 'teal'];
-
 class Enemy extends Component {
 
   constructor(props){
     super(props)
-    this.state = {
-      randomColor: enemyColors[Math.floor(Math.random() * enemyColors.length)]
-    }
   }
 
   render(props) {
@@ -49,9 +48,8 @@ class Enemy extends Component {
 
       return(
         <EnemyContainer
-          newPosition={newPosition}
-          randomColor={this.state.randomColor}>
-          {enemies[enemyID].enemyHP}
+          newPosition={newPosition}>
+          {/* {enemies[enemyID].enemyHP} */}
         </EnemyContainer>
       )
 
