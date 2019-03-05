@@ -68,7 +68,7 @@ class App extends Component {
 
     this.state = {
       deadEnemies: {},
-      level: 3,
+      level: 1,
       gameState: false,
       movementTimer: 0,
       currentBoard: null,
@@ -83,7 +83,7 @@ class App extends Component {
       explosionSound: [],
       shotSound: [],
       interval: null,
-
+      killCount: 0,
     }
   }
 
@@ -218,14 +218,12 @@ class App extends Component {
   }
 
   makeEnemies = () => {
-    console.log('firing make-enemies');
     let enemiesObject = {}
 
     this.state.randomPosition.forEach(enemyTimer => {
-      console.log('make-enemies looping through random positions');
       let enemyID = uuid();
       enemiesObject[enemyID] = {
-        enemyHP: this.state.level * 10 + 250,
+        enemyHP: this.state.level * 10 + 200,
         enemyStatus: true,
         enemyMovementTimer: enemyTimer,
       }
@@ -233,7 +231,6 @@ class App extends Component {
     this.setState({
       enemies: enemiesObject,
     })
-    console.log(this.state.enemies);
   }
   startGame = (start) => {
 
@@ -377,6 +374,7 @@ if (start) {
                 this.setState({
                   deadEnemies: newDeadEnemies,
                   cash: this.state.cash + 15,
+                  killCount: this.state.killCount + 1
                 })
                 this.explosionSound();
                 delete this.state.enemies[enemy]
@@ -463,8 +461,26 @@ if (start) {
 
     }
 
+    // renderEnemies = () => {
+    //   for (var enemy in this.state.enemies) {
+    //     let newEnemyPosition = this.state.enemyPositions[this.state.movementTimer - this.state.enemies[enemy].enemyMovementTimer]
+    //     return (
+    //       <Enemy
+    //         deadEnemies={this.state.deadEnemies}
+    //         newPosition={newEnemyPosition}
+    //         enemies={this.state.enemies}
+    //         key={enemy}
+    //         enemyID={enemy}
+    //         enemyStatus={this.state.enemyStatus}
+    //         enemyHP={this.state.enemyHP}
+    //
+    //       />
+    //     )
+    //   }
+    // }
+
     render() {
-      console.log(this.state);
+      console.log(this.state.killCount);
 
 
 
@@ -473,6 +489,9 @@ if (start) {
         <MainContainer>
           {this.state.currentBoard &&
             <EnemyContainer>
+
+
+              {/* {this.renderEnemies()} */}
 
               {/* convaluted sound setup to get sound library to fire multiple sounds at once */}
 
@@ -500,6 +519,7 @@ if (start) {
                 )
               })}
 
+
               <Board
                 passOverlayToTile={this.passOverlayToTile}
                 enemyPositions={this.state.enemyPositions}
@@ -519,6 +539,7 @@ if (start) {
           }
 
           <ControlPanel
+            killCount={this.state.killCount}
             level={this.state.level}
             pickTowerType={this.pickTowerType}
             cash={this.state.cash}
