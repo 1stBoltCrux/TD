@@ -68,7 +68,7 @@ class App extends Component {
 
     this.state = {
       deadEnemies: {},
-      level: 1,
+      level: 2,
       gameState: false,
       movementTimer: 0,
       currentBoard: null,
@@ -480,10 +480,6 @@ if (start) {
     // }
 
     render() {
-      console.log(this.state.killCount);
-
-
-
       return (
 
         <MainContainer>
@@ -498,9 +494,10 @@ if (start) {
               {this.state.explosionSound.map(sound => {
                 return sound
               })}
-              {this.state.shotSound.map(sound => {
+              {/* {this.state.shotSound.map(sound => {
                 return sound
-              })}
+              })} */}
+              {/* {this.state.shotSound} */}
 
 
               {Object.keys(this.state.enemies).map(enemy => {

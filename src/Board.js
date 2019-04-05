@@ -7,6 +7,7 @@ import uuid from 'uuid'
 import {TILE_H, TILE_W} from './config/movement/MovementVariables';
 import pathTileOne from './images/path-tile-1.svg'
 import grassTileOne from './images/grass-tile-1.png'
+import grass from './images/grass.jpeg'
 
 
 const BoardContainer = styled.div`
@@ -23,8 +24,8 @@ ${'' /* box-sizing: border-box; */}
 font-size: .5em;
 width: 30px;
 height: 30px;
- background-color: ${props => props.tileType === 0 ? 'green' : 'gray'};
-background-image: ${props => props.tileType >= 1 ? `url(${pathTileOne})` : `url(${grassTileOne})` };
+ background: ${props => props.tileType === 0 ? `url(${grass})` : 'gray'};
+background-image: ${props => props.tileType >= 1 ? `url(${pathTileOne})` : 'transparent' };
 background-size: cover;
 `
 
