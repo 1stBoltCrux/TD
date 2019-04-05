@@ -150,7 +150,7 @@ class ControlPanel extends Component {
           <div>
             <div>Welcome to <strong>Goblin Exploder!</strong><br/>
               <InstructionText>
-                <p>The goblins are coming and it's your job to <strong>explode</strong> them! Click and drag towers into strategic positions along the stone path. When you're satisfied with your fortifications, press start!</p>
+                <p>The goblins are coming and it's your job to <strong>explode</strong> them! Click and drag towers into strategic positions along the stone path. When you're satisfied with your fortifications, press <strong>start!</strong> - If any goblins make it to the end of the path it's game over pal!</p>
               </InstructionText>
               </div>
             <h3>Select a Map!</h3>

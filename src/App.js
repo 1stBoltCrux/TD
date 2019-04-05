@@ -68,7 +68,7 @@ class App extends Component {
 
     this.state = {
       deadEnemies: {},
-      level: 2,
+      level: 1,
       gameState: false,
       movementTimer: 0,
       currentBoard: null,
