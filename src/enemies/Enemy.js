@@ -26,9 +26,11 @@ const EnemyHealthBar = styled.div`
   height: 4px;
   background-color: red;
   width: ${props => props.health + '%'};
+  transition: width .5s ease-in-out;
 `
 
 const EnemyHealthBarContainer = styled.div`
+  z-index: 99999;
   position: absolute;
   opacity: .7
   bottom: 53px;
