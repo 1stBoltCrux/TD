@@ -1,15 +1,15 @@
 import React, { Component } from 'react';
+import {TILE_H, TILE_W} from './config/movement/MovementVariables';
+import uuid from 'uuid'
+import styled from 'styled-components'
+import {keyframes} from 'styled-components'
 import Board from './Board'
 import Tower from './towers/Tower'
 import SniperTower from './towers/SniperTower'
 import ControlPanel from './ControlPanel'
-import styled from 'styled-components'
 import Enemy from './enemies/Enemy';
-import uuid from 'uuid'
-import {TILE_H, TILE_W} from './config/movement/MovementVariables';
 import explosion from './images/explosion.gif'
 import smoke from './images/smoke.gif'
-import {keyframes} from 'styled-components'
 import ExplosionSound from './audio/ExplosionSound'
 import Shot from './audio/Shot'
 
@@ -224,6 +224,7 @@ class App extends Component {
       let enemyID = uuid();
       enemiesObject[enemyID] = {
         enemyHP: this.state.level * 10 + 200,
+        initialEnemyHP: this.state.level * 10 + 200,
         enemyStatus: true,
         enemyMovementTimer: enemyTimer,
       }
@@ -510,7 +511,7 @@ if (start) {
                     key={enemy}
                     enemyID={enemy}
                     enemyStatus={this.state.enemyStatus}
-                    enemyHP={this.state.enemyHP}
+
 
                   />
                 )

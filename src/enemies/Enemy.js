@@ -22,6 +22,20 @@ const EnemyContainer = styled.div`
   transition: transform .2s linear;
 `
 
+const EnemyHealthBar = styled.div`
+  height: 4px;
+  background-color: red;
+  width: ${props => props.health + '%'};
+`
+
+const EnemyHealthBarContainer = styled.div`
+  position: absolute;
+  opacity: .7
+  bottom: 53px;
+  width: 40px;
+  border: 1px solid black;
+`
+
 const fadeOut = keyframes`
 from {
 opacity: 1
@@ -39,16 +53,25 @@ class Enemy extends Component {
 
   render(props) {
 
-    const {deadEnemies, newPosition, enemyID, enemyHP, enemyStatus, enemies } = this.props;
+    const {deadEnemies, newPosition, enemyID, enemyStatus, enemies } = this.props;
 
+    let currentEnemyHealth = (enemies[enemyID].enemyHP/enemies[enemyID].initialEnemyHP) * 100;
 
+    if (currentEnemyHealth < 0) {
+      currentEnemyHealth = 1;
+    }
 
 
     if (newPosition && enemies[enemyID].enemyStatus) {
 
       return(
         <EnemyContainer
+
           newPosition={newPosition}>
+          <EnemyHealthBarContainer>
+            <EnemyHealthBar
+              health={currentEnemyHealth}/>
+          </EnemyHealthBarContainer>
           {/* {enemies[enemyID].enemyHP} */}
         </EnemyContainer>
       )
