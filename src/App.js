@@ -33,7 +33,7 @@ const BoardOverlay = styled.div`
   opacity: .8;
   width: 600px;
   height: 600px;
-  
+
 `
 
 const EnemyContainer = styled.div`
@@ -239,6 +239,7 @@ class App extends Component {
              randomPosition: [],
              explosionSound: [],
              shotSound: [],
+             killCount: 0,
            })
          )
        }, 1500)
@@ -578,9 +579,8 @@ if (start) {
 
             </EnemyContainer>
           }
-
           <ControlPanel
-            killCount={this.state.killCount}
+            
             level={this.state.level}
             pickTowerType={this.pickTowerType}
             cash={this.state.cash}

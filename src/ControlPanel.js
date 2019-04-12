@@ -86,12 +86,10 @@ class ControlPanel extends Component {
 
         {currentBoard &&
           <div>
-            <KillContainer>
-              Kills: {this.props.killCount}
-            </KillContainer>
+
             <CashContainer>
-              Gold:
-              ${this.props.cash}
+              <h3>Gold: {this.props.cash}</h3>
+
             </CashContainer>
 
 
