@@ -11,8 +11,8 @@ const EnemyContainer = styled.div`
   background-position: center;
   background-size: contain;
   background-repeat: no-repeat;
-  width: 50px;
-  height: 50px;
+  width: 58px;
+  height: 58px;
   border-radius: 20px;
   color: white;
   display: flex;

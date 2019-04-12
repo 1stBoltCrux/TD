@@ -45,10 +45,6 @@ const CashContainer = styled.div`
   font-weight: bold;
 `
 
-const KillContainer = styled.div`
-  font-weight: bold;
-`
-
 const InstructionText = styled.div`
   font-size: .8em;
 `
@@ -67,10 +63,6 @@ class ControlPanel extends Component {
   }
 
   render(props) {
-    console.log('control panel rendering');
-
-    const killCountColor = {color: 'red'}
-
     const {towers, gameState, changeMap, currentBoard, pickTowerType, level} = this.props
     return(
       <ControlsContainer>
@@ -80,10 +72,6 @@ class ControlPanel extends Component {
             <h2>Level {level}</h2>
           </div>
         )}
-
-
-
-
         {currentBoard &&
           <div>
 
