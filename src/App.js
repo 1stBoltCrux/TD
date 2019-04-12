@@ -21,6 +21,21 @@ justify-content: center;
 padding: 20px;
 `
 
+const BoardOverlay = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  color: white;
+  position: absolute;
+  background-color: black;
+  z-index: 5;
+  opacity: .8;
+  width: 600px;
+  height: 600px;
+  
+`
+
 const EnemyContainer = styled.div`
 height: 600px;
 width: 600px;
@@ -84,6 +99,7 @@ class App extends Component {
       shotSound: [],
       interval: null,
       killCount: 0,
+      boardOverlay: false,
     }
   }
 
@@ -157,7 +173,7 @@ class App extends Component {
     })
   }
 
-  updateTimer = () => {
+  updateTimer = async () => {
     let timer = this.state.movementTimer;
     timer ++
     this.setState({
@@ -187,29 +203,46 @@ class App extends Component {
       this.setEnemyTimer();
       this.makeEnemies();
     } else if (Object.keys(this.state.deadEnemies).length === this.state.level * 2) {
-      setTimeout(()=> {
-        this.setState({
-          deadEnemies: {},
-          level: this.state.level + 1,
-          gameState: false,
-          movementTimer: 0,
-          currentBoard: this.state.currentBoard,
-          towers: {},
-          enemyPositions: [],
-          movementTimer: 0,
-          enemyStatus: true,
-          cash: this.state.cash + 400,
-          enemies: {},
-          randomPosition: [],
-          explosionSound: [],
-          shotSound: [],
-        }, clearInterval(this.state.interval))
-        this.setEnemyPositions()
-        this.setEnemyTimer();
-        this.makeEnemies();
-
+      clearInterval(this.state.interval)
+      this.setState({
+        boardOverlay: true,
       })
+      await this.nextLevel();
+      this.setState({
+        boardOverlay: false ,
+      })
+      this.setEnemyPositions()
+      this.setEnemyTimer();
+      this.makeEnemies();
+
+
+
     }
+  }
+
+   nextLevel = (t) => {
+     return new Promise((resolve, reject) => {
+       setTimeout(() => {
+         resolve(
+           this.setState({
+             deadEnemies: {},
+             level: this.state.level + 1,
+             gameState: false,
+             movementTimer: 0,
+             currentBoard: this.state.currentBoard,
+             towers: {},
+             enemyPositions: [],
+             movementTimer: 0,
+             enemyStatus: true,
+             cash: this.state.cash + 400,
+             enemies: {},
+             randomPosition: [],
+             explosionSound: [],
+             shotSound: [],
+           })
+         )
+       }, 1500)
+     });
   }
 
   componentDidMount(){
@@ -486,6 +519,16 @@ if (start) {
         <MainContainer>
           {this.state.currentBoard &&
             <EnemyContainer>
+              {this.state.boardOverlay &&
+                <BoardOverlay>
+                  <h3>Next Level: {this.state.level}</h3>
+                  <h3>Goblins Exploded: {this.state.killCount}</h3>
+
+
+                </BoardOverlay>
+              }
+
+
 
 
               {/* {this.renderEnemies()} */}

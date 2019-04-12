@@ -15,12 +15,12 @@ const BoardContainer = styled.div`
   overflow: hidden;
 `
 
+
+
 const Block = styled.div`
 justify-content: center;
 display: flex;
 align-items: center;
-${'' /* box-sizing: border-box; */}
- ${'' /* border: 1px solid black; */}
 font-size: .5em;
 width: 30px;
 height: 30px;
@@ -87,10 +87,13 @@ class Board extends Component {
     return (
       <div>
 
+
+
         <BoardContainer>
 
-          {this.currentMap()}
-        </BoardContainer>
+            {this.currentMap()}
+          </BoardContainer>
+
       </div>
 
 

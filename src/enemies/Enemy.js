@@ -30,7 +30,7 @@ const EnemyHealthBar = styled.div`
 `
 
 const EnemyHealthBarContainer = styled.div`
-  z-index: 99999;
+  z-index: 3;
   position: absolute;
   opacity: .7
   bottom: 53px;
