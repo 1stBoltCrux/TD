@@ -3,7 +3,6 @@ import styled from 'styled-components'
 import { DropTarget } from 'react-dnd';
 import {TowerDrag} from './draggables/Draggable';
 import uuid from 'uuid';
-import smoke from './images/smoke.gif'
 
 const TileContainer = styled.div`
 width: 35px;
@@ -30,14 +29,8 @@ const test = {
   left: '-15px'
 }
 
-const testTwo = {
-  position: 'absolute',
-  top: '-7px',
-  left: '3px',
-}
-
 const tileTarget = {
-  drop(props, monitor) {
+  drop(props) {
     props.makeTower(props.coords, props.whichTower)
   }
 };
@@ -52,7 +45,7 @@ function collect(connect, monitor) {
 class Tile extends Component {
   render(){
     console.log('rendering');
-    const {whichTower, towers, coords, connectDropTarget, isOver, tileType} = this.props
+    const {whichTower, towers, connectDropTarget, isOver, tileType} = this.props
     if (tileType !== 0) {
       return (
         <div>

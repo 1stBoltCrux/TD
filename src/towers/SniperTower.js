@@ -6,8 +6,8 @@ import towerOne from './../images/tower-1.png'
 
 const TowerContainer = styled.div`
   border-radius: 20px;
-  width: 50px;
-  height: 50px;
+  width: 58px;
+  height: 58px;
   background-image: url(${towerOne});
     background-repeat: no-repeat;
     background-size: contain;
@@ -16,6 +16,7 @@ const TowerContainer = styled.div`
   justify-content: center;
   align-items: center;
   color: white;
+
 `
 
 const towerSource = {

@@ -1,14 +1,26 @@
 import React, { Component } from 'react';
-import {BoardOne, BoardTwo, BoardThree} from './config/board/Boards';
+import Boards from './config/board/Boards';
 import Tower from './towers/Tower';
 import SniperTower from './towers/SniperTower';
 import styled from 'styled-components';
+import goblin from './images/goblin.png';
+import gold from './images/gold.png';
 
 const ControlsContainer = styled.div`
   text-align: center;
   padding: 20px;
-  height: 600px;
   width: 200px;
+  box-shadow: 5px -1px 25px 2px rgba(0, 0, 0, 0.26);
+  margin: 0 14px;
+
+`
+
+const TitleContainer = styled.div`
+  font-size: 2em;
+  h3 {
+    margin-top: 0;
+    margin-bottom: .5em;
+  }
 `
 const ControlButton = styled.div`
   border-radius: 10px;
@@ -30,18 +42,18 @@ const TowerContainer = styled.div`
 
 const TowerStats = styled.div`
   font-size: .8em;
-  border: 2px solid #B7B7B7;
   width: 48%;
   display: flex;
   justify-content: center;
   flex-direction: column;
   align-items: center;
   margin: 1%;
-  padding: .2em;
 `
 
 const CashContainer = styled.div`
-  color: green;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   font-weight: bold;
 `
 
@@ -62,22 +74,19 @@ class ControlPanel extends Component {
     }
   }
 
-  render(props) {
-    const {towers, gameState, changeMap, currentBoard, pickTowerType, level} = this.props
+  render() {
+    console.log(Boards)
+    const {cash, gameState, changeMap, currentBoard, pickTowerType} = this.props
     return(
       <ControlsContainer>
-        {currentBoard && (
-          <div>
 
-            <h2>Level {level}</h2>
-          </div>
-        )}
         {currentBoard &&
           <div>
-
+            <TitleContainer>
+              <h3>Goblin Exploder</h3>
+            </TitleContainer>
             <CashContainer>
-              <h3>Gold: {this.props.cash}</h3>
-
+              <img src={gold} alt="Gold Piece" width="26px"/><h3>&nbsp;- {cash}</h3>
             </CashContainer>
 
 
@@ -110,37 +119,49 @@ class ControlPanel extends Component {
                   canDrag={true}
                 />
                 <strong>Gun Tower</strong>
-                cost: 80
-                range: 1
-                damage: 40
+                cost: 80 <br/>
+                range: 1 <br/>
+                damage: 40 <br/>
               </TowerStats>
               <TowerStats>
                 <SniperTower
                   pickTowerType={pickTowerType}
                   canDrag={true}/>
                 <strong>Sniper Tower</strong>
-                cost: 120
-                range: 7
-                damage: 20
+                cost: 120 <br/>
+                range: 7 <br/>
+                damage: 20 <br/>
               </TowerStats>
 
             </TowerContainer>
-
-
           </div>
         }
 
 
         {!currentBoard && (
-
           <div>
-            <div>Welcome to <strong>Goblin Exploder!</strong><br/>
+          
+            <div><h3>Welcome to <strong>Goblin Exploder</strong></h3>
+
+            <img src={goblin} alt="Goblin" width="100%"/>
               <InstructionText>
                 <p>The goblins are coming and it's your job to <strong>explode</strong> them! Click and drag towers into strategic positions along the stone path. When you're satisfied with your fortifications, press <strong>start!</strong> - If any goblins make it to the end of the path it's game over pal!</p>
               </InstructionText>
               </div>
             <h3>Select a Map!</h3>
-            <ControlButton onClick={() => changeMap(BoardOne)}>
+
+            {
+              Object.keys(Boards).map((board) => {
+                console.log(board.name)
+                return (
+                  <ControlButton onClick = {() => changeMap(Boards[board].board)}>
+                  	{Boards[board].name}
+                  </ControlButton>
+                )
+              })
+            }
+           
+            {/* <ControlButton onClick={() => changeMap(BoardOne)}>
               Map One
             </ControlButton>
             <ControlButton onClick={() => changeMap(BoardTwo)}>
@@ -148,7 +169,7 @@ class ControlPanel extends Component {
             </ControlButton>
             <ControlButton onClick={() => changeMap(BoardThree)}>
               Map Three
-            </ControlButton>
+            </ControlButton> */}
 
 
           </div>

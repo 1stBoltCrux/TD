@@ -16,9 +16,9 @@ import Shot from './audio/Shot'
 
 const MainContainer = styled.div`
 display: flex;
-align-items: center;
 justify-content: center;
 padding: 20px;
+margin-top: 40px;
 `
 
 const BoardOverlay = styled.div`
@@ -33,7 +33,6 @@ z-index: 5;
 opacity: .8;
 width: 700px;
 height: 700px;
-
 `
 
 const EnemyContainer = styled.div`
@@ -108,7 +107,6 @@ export default class App extends Component {
   }
 
   smokeFiring = (towers) => {
-
     let smokeEffects = []
     Object.keys(towers).forEach((tower) => {
       if (towers[tower].towerTarget.length > 0) {
@@ -138,7 +136,6 @@ export default class App extends Component {
             enemyPositions.push({top:top, right:right, tile: tile})
           }
         })
-
       })
       enemyPositions.sort((position1, position2) => {
         if( position1.tile < position2.tile ) {
@@ -214,7 +211,7 @@ export default class App extends Component {
       }
     }
 
-    nextLevel = (t) => {
+    nextLevel = () => {
       return new Promise((resolve, reject) => {
         setTimeout(() => {
           resolve(
@@ -261,7 +258,6 @@ export default class App extends Component {
     }
     startGame = (start) => {
 
-
       if (Object.keys(this.state.enemies).length === 0 ) {
         this.makeEnemies()
       }
@@ -299,6 +295,7 @@ export default class App extends Component {
 
       if (this.state.cash >= towerInfo.cost) {
         let newTower = {};
+        // eslint-disable-next-line default-case
         switch(towerInfo.type) {
           case 'Tower':
           newTower[whichTower] = {
@@ -347,7 +344,7 @@ export default class App extends Component {
 
             Object.keys(this.state.enemies).map(enemy => {
 
-              const enemyTimer = this.state.movementTimer -this.state.enemies[enemy].enemyMovementTimer
+              const enemyTimer = this.state.movementTimer - this.state.enemies[enemy].enemyMovementTimer
               let currentPosition = this.state.enemyPositions[enemyTimer]
 
               //tower range must be an odd number, this is so it works in tandem with the Tile 'overlay' styled component width/height and position properties//
