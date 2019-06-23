@@ -5,6 +5,7 @@ import {TowerDrag} from './../draggables/Draggable';
 import towerOne from './../images/tower-1.png'
 
 
+
 const TowerContainer = styled.div`
   border-radius: 20px;
   width: 58px;
@@ -67,7 +68,6 @@ class Tower extends Component {
               }}>
 
               <TowerContainer>
-              
               </TowerContainer>
 
 

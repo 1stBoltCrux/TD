@@ -1,17 +1,18 @@
 import React, { Component } from 'react';
 import {TILE_H, TILE_W} from './config/movement/MovementVariables';
-import uuid from 'uuid'
-import styled from 'styled-components'
-import {keyframes} from 'styled-components'
-import Board from './Board'
-import Tower from './towers/Tower'
-import SniperTower from './towers/SniperTower'
-import ControlPanel from './ControlPanel'
+import uuid from 'uuid';
+import styled from 'styled-components';
+import {keyframes} from 'styled-components';
+import Board from './Board';
+import Tower from './towers/Tower';
+import SniperTower from './towers/SniperTower';
+import ControlPanel from './ControlPanel';
 import Enemy from './enemies/Enemy';
-import explosion from './images/explosion.gif'
-import smoke from './images/smoke.gif'
+import explosion from './images/explosion.gif';
+import smoke from './images/smoke.gif';
 import ExplosionSound from './audio/ExplosionSound'
-import Shot from './audio/Shot'
+import Shot from './audio/Shot';
+import BuildSound from './audio/BuildTower.js';
 
 const MainContainer = styled.div`
 display: flex;
@@ -95,6 +96,7 @@ export default class App extends Component {
       towerTypePicked: null,
       explosionSound: [],
       shotSound: [],
+      buildSound: [],
       interval: null,
       killCount: 0,
       boardOverlay: false,
@@ -190,6 +192,8 @@ export default class App extends Component {
           enemies: {},
           randomPosition: [],
           explosionSound: [],
+          shotSound: [],
+          buildSound: [],
           interval: null,
           shotSound: [],
           killCount: 0,
@@ -230,6 +234,7 @@ export default class App extends Component {
               randomPosition: [],
               explosionSound: [],
               shotSound: [],
+              buildSound: [],
             })
           )
         }, 1500)
@@ -330,7 +335,8 @@ export default class App extends Component {
             this.setState({
               towers: newTowerState,
               cash: this.state.cash - towerInfo.cost
-            })
+            });
+            this.buildSound();
           }
         }
 
@@ -468,7 +474,15 @@ export default class App extends Component {
             shotSound: [...this.state.shotSound, newShotSoundArray]
           })
         }
+        buildSound = () => {
+        	let newBuildSoundArray = []
+        	newBuildSoundArray.push( <BuildSound/> )
+        	this.setState({
+        		buildSound: [...this.state.buildSound, newBuildSoundArray]
+        	})
+        }
         render() {
+          console.log(this.state.towers)
           return (
             <MainContainer>
               {this.state.currentBoard &&
@@ -485,6 +499,11 @@ export default class App extends Component {
                   {this.state.explosionSound.map(sound => {
                     return sound
                   })}
+                  {
+                  	this.state.buildSound.map(sound => {
+                  		return sound
+                  	})
+                  }
                   {/* {this.state.shotSound.map(sound => {
                     return sound
                   })} */}
