@@ -4,6 +4,7 @@ import {DragSource, DragLayer} from 'react-dnd'
 import {TowerDrag} from './../draggables/Draggable';
 import towerOne from './../images/tower-1.png'
 
+
 const TowerContainer = styled.div`
   border-radius: 20px;
   width: 58px;
@@ -28,7 +29,7 @@ const towerSource = {
     }})
     return {};
   },
-  canDrag: function(props, monitor) {
+  canDrag: function(props) {
   return props.canDrag;
 }
 };
@@ -51,7 +52,7 @@ class Tower extends Component {
   }
   render() {
 
-    const {connectDragSource, isDragging, canDrag} = this.props
+    const {connectDragSource, isDragging} = this.props
         return connectDragSource(
           <div>
 
@@ -66,8 +67,9 @@ class Tower extends Component {
               }}>
 
               <TowerContainer>
-
+              
               </TowerContainer>
+
 
             </div>
           </div>

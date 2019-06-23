@@ -13,7 +13,6 @@ import smoke from './images/smoke.gif'
 import ExplosionSound from './audio/ExplosionSound'
 import Shot from './audio/Shot'
 
-
 const MainContainer = styled.div`
 display: flex;
 justify-content: center;
@@ -193,6 +192,7 @@ export default class App extends Component {
           explosionSound: [],
           interval: null,
           shotSound: [],
+          killCount: 0,
         }, clearInterval(this.state.interval))
         this.setEnemyTimer();
         this.makeEnemies();
@@ -519,7 +519,6 @@ export default class App extends Component {
                 </EnemyContainer>
               }
               <ControlPanel
-
                 level={this.state.level}
                 pickTowerType={this.pickTowerType}
                 cash={this.state.cash}

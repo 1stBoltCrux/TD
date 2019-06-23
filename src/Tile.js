@@ -3,6 +3,7 @@ import styled from 'styled-components'
 import { DropTarget } from 'react-dnd';
 import {TowerDrag} from './draggables/Draggable';
 import uuid from 'uuid';
+import BuildTower from './audio/BuildTower.js'
 
 const TileContainer = styled.div`
 width: 35px;
@@ -85,6 +86,7 @@ class Tile extends Component {
                       //styled div adjusts to center big tower image//
                         <div style={test} key={uuid()}>
                           {towers[tower].towerElement}
+                          <BuildTower/>
                         </div>
                     )
                   }

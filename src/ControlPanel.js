@@ -107,7 +107,7 @@ class ControlPanel extends Component {
                 gameState={gameState}
                 onClick={() => this.props.startGame(false)}
               >
-                <p>Stop!</p>
+                <p>Pause</p>
               </ControlButton>
 
 
