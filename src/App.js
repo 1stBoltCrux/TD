@@ -18,7 +18,6 @@ const MainContainer = styled.div`
 display: flex;
 justify-content: center;
 padding: 20px;
-margin-top: 40px;
 `
 
 const BoardOverlay = styled.div`
@@ -108,6 +107,7 @@ export default class App extends Component {
   }
 
   smokeFiring = (towers) => {
+ 
     let smokeEffects = []
     Object.keys(towers).forEach((tower) => {
       if (towers[tower].towerTarget.length > 0) {
@@ -489,7 +489,7 @@ export default class App extends Component {
                 <EnemyContainer>
                   {this.state.boardOverlay &&
                     <BoardOverlay>
-                      <h3>Next Level: {this.state.level}</h3>
+                      <h3>Next Level: {this.state.level + 1}</h3>
                       <h3>Total Goblins Exploded: {this.state.killCount}</h3>
                     </BoardOverlay>
                   }
@@ -499,15 +499,8 @@ export default class App extends Component {
                   {this.state.explosionSound.map(sound => {
                     return sound
                   })}
-                  {
-                  	this.state.buildSound.map(sound => {
-                  		return sound
-                  	})
-                  }
-                  {/* {this.state.shotSound.map(sound => {
-                    return sound
-                  })} */}
-                  {/* {this.state.shotSound} */}
+                  {this.state.shotSound}
+                  {this.state.buildSound}
 
                   {Object.keys(this.state.enemies).map(enemy => {
                     let newEnemyPosition = this.state.enemyPositions[this.state.movementTimer - this.state.enemies[enemy].enemyMovementTimer]

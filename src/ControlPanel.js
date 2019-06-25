@@ -76,14 +76,16 @@ class ControlPanel extends Component {
 
   render() {
     console.log(Boards)
-    const {cash, gameState, changeMap, currentBoard, pickTowerType} = this.props
+    const {cash, gameState, changeMap, currentBoard, pickTowerType, level} = this.props
     return(
       <ControlsContainer>
 
         {currentBoard &&
           <div>
+     
             <TitleContainer>
               <h3>Goblin Exploder</h3>
+            <h3>Level: {level}</h3>
             </TitleContainer>
             <CashContainer>
               <img src={gold} alt="Gold Piece" width="26px"/><h3>&nbsp;- {cash}</h3>
@@ -140,15 +142,14 @@ class ControlPanel extends Component {
 
         {!currentBoard && (
           <div>
-          
-            <div><h3>Welcome to <strong>Goblin Exploder</strong></h3>
+            <div><h3>Welcome to<br/> <strong>Goblin Exploder</strong></h3>
 
             <img src={goblin} alt="Goblin" width="100%"/>
               <InstructionText>
                 <p>The goblins are coming and it's your job to <strong>explode</strong> them! Click and drag towers into strategic positions along the stone path. When you're satisfied with your fortifications, press <strong>start!</strong> - If any goblins make it to the end of the path it's game over pal!</p>
               </InstructionText>
               </div>
-            <h3>Select a Map!</h3>
+            <h3>Select a Map</h3>
 
             {
               Object.keys(Boards).map((board) => {
